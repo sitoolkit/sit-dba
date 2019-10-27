@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sit-db-entity" default="hbm2java" basedir=".">
+
+  <taskdef name="hibernatetool"
+           classname="org.hibernate.tool.ant.HibernateToolTask"
+           classpath="${maven.compile.classpath}" />
+
+  <target name="hbm2java">
+
+    <hibernatetool destdir="${hibernate-tools.destdir}">
+
+      <jdbcconfiguration packagename="package.name"
+                         revengfile="${basedir}/hibernate.reveng.xml"
+                         reversestrategy="io.sitoolkit.refimpl.db.entity.CustomReverseEngineeringStrategy"
+                         propertyFile="${project.build.directory}/hibernate.reveng.properties" />
+
+      <hbm2java jdk5="true" ejb3="true" />
+
+    </hibernatetool>
+
+  </target>
+
+
+</project>

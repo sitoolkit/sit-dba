@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+
+  dbms:
+    image: postgres
+    environment:
+      TZ: ${OS_TIMEZONE}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+
+  dbadmin:
+    image: dockage/phppgadmin
+    depends_on: 
+      - dbms
+    environment:
+      PHP_PG_ADMIN_SERVER_HOST: dbms
+      TZ: ${OS_TIMEZONE}
+    ports:
+      - 80:80
+
+  dbdoc:
+    image: schemaspy/schemaspy
+    environment: 
+      TZ: ${OS_TIMEZONE}
+    volumes: 
+      - ./target/classes/schemaspy.properties:/schemaspy.properties
+      - ./target/schemaspy:/output

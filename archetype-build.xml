@@ -1,0 +1,88 @@
+<project xmlns:if="ant:if" xmlns:unless="ant:unless" name="sit-dba-archetype" basedir="." default="install">
+
+  <condition property="mvnw" value="${basedir}\mvnw.cmd" else="${basedir}\mvnw">
+    <os family="windows" />
+  </condition>
+
+  <property name="archetypedir" value="${basedir}/target/generated-sources/archetype"/>
+
+  
+  <target name="deploy">
+    
+    <antcall target="install"/>
+
+    <antcall target="test"/>
+
+    <exec executable="${mvnw}" dir="${archetypedir}" failonerror="true">
+      <arg line="deploy:deploy -P release"/>
+    </exec>
+
+  </target>
+
+  
+  <target name="install">
+    
+    <antcall target="create-archetype" />
+    
+    <exec executable="${mvnw}" dir="${archetypedir}" failonerror="true">
+      <arg line="clean install"/>
+    </exec>
+
+    <antcall target="test"/>
+
+  </target>
+
+  
+  <target name="create-archetype">
+    
+    <exec executable="${mvnw}" dir="${basedir}" failonerror="true">
+      <arg line="clean archetype:create-from-project"/>
+    </exec>
+
+    <property name="archetyperesdir" value="${archetypedir}/src/main/resources/archetype-resources"/>
+
+    <delete file="${archetyperesdir}/README.md"/>
+    <delete file="${archetyperesdir}/archetype-build.xml"/>
+    <delete file="${archetyperesdir}/archetype-pom.xml"/>
+    <delete>
+      <fileset dir="${archetyperesdir}" includes="**/.classpath"/>
+      <fileset dir="${archetyperesdir}" includes="**/.project"/>
+    </delete>
+    <delete includeemptydirs="true">
+      <fileset dir="${archetypedir}" includes="**/.settings/" defaultexcludes="false"/>
+    </delete>
+        
+    <copy file="${basedir}/archetype-pom.xml" tofile="${archetypedir}/pom.xml" overwrite="true"/>
+    
+  </target>
+
+  
+  <target name="test">
+    
+    <property name="workdir" value="${basedir}/target/test"/>
+    <property name="project" value="test-dba" />
+    <property name="projectdir" value="${workdir}/${project}" />
+    
+    <delete dir="${workdir}" />
+    <mkdir dir="${workdir}" />
+    
+    <exec executable="${mvnw}" dir="${workdir}" failonerror="true">
+      <arg line="archetype:generate -B -DarchetypeGroupId=io.sitoolkit.refimpl"/>
+      <arg line="-DarchetypeArtifactId=sit-dba-archetype"/>
+      <arg line="-DarchetypeVersion=1.0.0-SNAPSHOT"/>
+      <arg line="-DgroupId=a.b.c"/>
+      <arg line="-DartifactId=${project}"/>
+    </exec>
+    
+    <condition property="mvnw.local" value="${projectdir}/mvnw.cmd" else="${projectdir}/mvnw">
+      <os family="windows" />
+    </condition>
+
+    <chmod perm="u+x" file="${projectdir}/mvnw" />
+    
+    <exec executable="${mvnw.local}" dir="${projectdir}" failonerror="true">
+    </exec>
+    
+  </target>
+
+</project>

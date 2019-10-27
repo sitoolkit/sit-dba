@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<!-- See also -->
+<!-- https://docs.jboss.org/tools/latest/en/hibernatetools/html/reverseengineering.html -->
+
+<hibernate-reverse-engineering>
+  <type-mapping>
+    <sql-type jdbc-type="CHAR" hibernate-type="java.lang.String" />
+    <sql-type jdbc-type="DATE" hibernate-type="java.time.LocalDate" />
+    <sql-type jdbc-type="TIME" hibernate-type="java.time.LocalTime" />
+    <sql-type jdbc-type="TIMESTAMP" hibernate-type="java.time.LocalDateTime" />
+  </type-mapping>
+
+  <table-filter match-name="flyway_schema_history" exclude="true" />
+
+  <table-filter match-name="person" package="io.sitoolkit.refimpl.db.domain.persion"></table-filter>
+  <table-filter match-name="person_relation" package="io.sitoolkit.refimpl.db.domain.persion"></table-filter>
+  <table-filter match-name="person_address" package="io.sitoolkit.refimpl.db.domain.persion"></table-filter>
+
+</hibernate-reverse-engineering>

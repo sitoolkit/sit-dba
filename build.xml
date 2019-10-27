@@ -1,0 +1,73 @@
+<project xmlns:if="ant:if" xmlns:unless="ant:unless" name="sit-dba" basedir="." default="install">
+
+  <condition property="mvn.cmd" value="${basedir}\mvnw.cmd" else="${basedir}\mvnw">
+    <os family="windows" />
+  </condition>
+
+  <exec executable="docker-compose" resultproperty="docker.ret" failifexecutionfails="false">
+    <arg line="version"/>
+  </exec>
+  
+  <condition property="docker.installed">
+    <equals arg1="${docker.ret}" arg2="0"/>
+  </condition>
+
+
+  <target name="install">
+
+    <antcall target="init-container"/>
+
+    <exec executable="${mvn.cmd}" failonerror="true">
+      <arg line="clean"/>
+    </exec>
+
+    <exec executable="${mvn.cmd}" failonerror="true">
+      <arg line="-f sit-dba-migration -P migrate"/>
+    </exec>
+
+    <exec executable="${mvn.cmd}" failonerror="true">
+      <arg line="-f sit-dba-entity -P reveng"/>
+    </exec>
+
+    <exec executable="${mvn.cmd}" failonerror="true">
+      <arg line="install"/>
+    </exec>
+
+    <antcall target="export-dbdoc"/>
+    
+  </target>
+  
+  
+  <target name="init-container" if="${docker.installed}">
+
+    <exec executable="${mvn.cmd}" failonerror="true">
+      <arg line="clean resources:resources -N"/>
+    </exec>
+
+    <exec executable="docker-compose" failonerror="true">
+      <arg line="up -d"/>
+    </exec>
+
+  </target>
+
+  
+  <target name="export-dbdoc" if="${docker.installed}">
+
+    <exec executable="docker-compose" failonerror="true">
+      <arg line="up dbdoc"/>
+    </exec>
+
+  </target>
+  
+  
+  <target name="set-version">
+
+    <property name="version" value="1.0.0-SNAPSHOT"/>
+    
+    <exec executable="${mvn.cmd}">
+      <arg line="versions:set -DnewVersion=${version} -DgenerateBackupPoms=false" />
+    </exec>
+    
+  </target>
+
+</project>
