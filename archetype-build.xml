@@ -27,11 +27,10 @@
 
     <antcall target="test"/>
 
-    <!--
     <exec executable="docker-compose">
       <arg line="rm -sf"/>
     </exec>
-   -->    
+
   </target>
 
   
