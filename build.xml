@@ -41,7 +41,7 @@
   <target name="init-container" if="${docker.installed}">
 
     <exec executable="${mvn.cmd}" failonerror="true">
-      <arg line="clean resources:resources -N"/>
+      <arg line="process-resources -N"/>
     </exec>
 
     <exec executable="docker-compose" failonerror="true">

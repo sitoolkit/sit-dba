@@ -24,6 +24,8 @@
   </modules>
 
   <properties>
+    <admin.port>80</admin.port>
+  
     <db.jdbc.groupId>org.postgresql</db.jdbc.groupId>
     <db.jdbc.artifactId>postgresql</db.jdbc.artifactId>
     <db.jdbc.version>42.2.8</db.jdbc.version>
@@ -93,6 +95,7 @@
           </execution>
         </executions>
       </plugin>
+
     </plugins>
 
     <pluginManagement>

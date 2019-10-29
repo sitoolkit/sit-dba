@@ -5,13 +5,10 @@
   </condition>
 
   <property name="archetypedir" value="${basedir}/target/generated-sources/archetype"/>
-
   
   <target name="deploy">
     
     <antcall target="install"/>
-
-    <antcall target="test"/>
 
     <exec executable="${mvnw}" dir="${archetypedir}" failonerror="true">
       <arg line="deploy:deploy -P release"/>
@@ -30,6 +27,11 @@
 
     <antcall target="test"/>
 
+    <!--
+    <exec executable="docker-compose">
+      <arg line="rm -sf"/>
+    </exec>
+   -->    
   </target>
 
   
@@ -79,6 +81,10 @@
     </condition>
 
     <chmod perm="u+x" file="${projectdir}/mvnw" />
+
+    <replace file="${projectdir}/pom.xml" token="&lt;admin.port&gt;80" value="&lt;admin.port&gt;81"/>
+    <replace file="${projectdir}/pom.xml" token="&lt;db.port&gt;5432" value="&lt;db.port&gt;5433"/>
+
     
     <exec executable="${mvnw.local}" dir="${projectdir}" failonerror="true">
     </exec>
