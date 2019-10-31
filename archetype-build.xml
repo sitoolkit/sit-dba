@@ -83,9 +83,11 @@
     <exec executable="${mvnw.local}" dir="${projectdir}" failonerror="true">
     </exec>
 
-    <exec executable="docker-compose" dir="${projectdir}" failonerror="false">
+    <!-- This comment out is because Jenkins slave can't execute docker-compose command.
+    <exec executable="docker-compose" dir="${projectdir}">
       <arg line="rm -sf"/>
     </exec>
+    -->
 
   </target>
 
