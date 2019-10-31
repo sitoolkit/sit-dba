@@ -27,10 +27,6 @@
 
     <antcall target="test"/>
 
-    <exec executable="docker-compose">
-      <arg line="rm -sf"/>
-    </exec>
-
   </target>
 
   
@@ -83,11 +79,14 @@
 
     <replace file="${projectdir}/pom.xml" token="&lt;admin.port&gt;80" value="&lt;admin.port&gt;81"/>
     <replace file="${projectdir}/pom.xml" token="&lt;db.port&gt;5432" value="&lt;db.port&gt;5433"/>
-
     
     <exec executable="${mvnw.local}" dir="${projectdir}" failonerror="true">
     </exec>
-    
+
+    <exec executable="docker-compose" dir="${projectdir}" failonerror="false">
+      <arg line="rm -sf"/>
+    </exec>
+
   </target>
 
 </project>
