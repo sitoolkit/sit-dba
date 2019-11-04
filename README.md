@@ -124,7 +124,7 @@ DB Administrator has these 3 Maven projects.
 This project is for maintaining DDL / DML script to create DB schema for the application. It is packaged to an executable jar which supports [Flyway CLI](https://flywaydb.org/documentation/commandline/). 
 
 ```
-java -jar sit-db-migration-1.0.0-SNAPSHOT.jar --config=flyway.properties
+java -jar sit-db-migration-xxx-SNAPSHOT.jar --config=flyway.properties
 ```
 
 The specification of flyway.properties is defined in [here](https://flywaydb.org/documentation/configfiles).
@@ -156,7 +156,7 @@ You can generate a new project using the following maven command.
 mvn archetype:generate -B \
     -DarchetypeGroupId=io.sitoolkit.dba \
     -DarchetypeArtifactId=sit-dba-archetype \
-    -DarchetypeVersion=1.0.0-SNAPSHOT \
+    -DarchetypeVersion=1.0.0 \
     -DgroupId=xxx \
     -DartifactId=yyy
 ```
