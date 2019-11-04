@@ -11,7 +11,7 @@
     <antcall target="install"/>
 
     <exec executable="${mvnw}" dir="${archetypedir}" failonerror="true">
-      <arg line="deploy:deploy -P release"/>
+      <arg line="deploy -P release"/>
     </exec>
 
   </target>

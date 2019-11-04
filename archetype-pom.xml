@@ -58,8 +58,8 @@
 
   <!-- Environment Settings -->
   <scm>
-    <connection>scm:git:git//github.com/sitoolkit/sit-cv.git</connection>
-    <developerConnection>scm:git:git//github.com/sitoolkit/sit-cv.git</developerConnection>
+    <connection>scm:git:git//github.com/sitoolkit/sit-dba.git</connection>
+    <developerConnection>scm:git:git//github.com/sitoolkit/sit-dba.git</developerConnection>
     <url>https://github.com/sitoolkit/sit-dba.git</url>
   </scm>
   <prerequisites>
