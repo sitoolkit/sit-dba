@@ -39,8 +39,8 @@
     <property name="archetyperesdir" value="${archetypedir}/src/main/resources/archetype-resources"/>
 
     <delete file="${archetyperesdir}/README.md"/>
-    <delete file="${archetyperesdir}/archetype-build.xml"/>
-    <delete file="${archetyperesdir}/archetype-pom.xml"/>
+    <delete file="${archetyperesdir}/src/archetype/build.xml"/>
+    <delete file="${archetyperesdir}/src/archetype/pom.xml"/>
     <delete>
       <fileset dir="${archetyperesdir}" includes="**/.classpath"/>
       <fileset dir="${archetyperesdir}" includes="**/.project"/>
@@ -49,7 +49,7 @@
       <fileset dir="${archetypedir}" includes="**/.settings/" defaultexcludes="false"/>
     </delete>
         
-    <copy file="${basedir}/archetype-pom.xml" tofile="${archetypedir}/pom.xml" overwrite="true"/>
+    <copy file="${basedir}/src/archetype/pom.xml" tofile="${archetypedir}/pom.xml" overwrite="true"/>
     
   </target>
 
