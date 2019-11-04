@@ -1,6 +1,6 @@
 # DB Administrator
 
-SI-Toolkit for DB Administrator is a tool of DB migration JPA (Java Persistence API) reverse engineering and DB design document generation.
+SI-Toolkit for DB Administrator is a tool of DB migration, JPA (Java Persistence API) reverse engineering and DB design document generation.
 
 Its main functionalities are
 
@@ -137,18 +137,76 @@ Thie project is to be packaged to general library jar which contains JPA Entitie
 
 This project is the sample of implementation of Spring family, uses Spring Boot and Spring Data JPA.
 
-## Create Your Project
+## How To Use as Your Project
 
-You can create a new project using the following maven command.
+You can use sit-dba as your project with Maven archetype.
+Basic usage of sit-dba is the following steps.
+
+1. Generate project.
+2. Modify DB connection parameters.
+3. Modify DDL / DML script.
+4. Modify target tables to generate to JPA Entity.
+
+### Generate Project
+
+You can generate a new project using the following maven command.
+(Replace `xxx` and `yyy` to your groupId and artifactId.)
 
 ```
 mvn archetype:generate -B \
     -DarchetypeGroupId=io.sitoolkit.dba \
     -DarchetypeArtifactId=sit-dba-archetype \
     -DarchetypeVersion=1.0.0-SNAPSHOT \
-    -DgroupId=yourGroupId \
-    -DartifactId=yourArtifactId
+    -DgroupId=xxx \
+    -DartifactId=yyy
 ```
 
-After a project is created, you change DB connection parameters to your development environment.
 
+### Modify DB Connection Parameters
+
+After a project is generated, change DB connection parameters in pom.xml in the root project to your development environment.
+
+
+### Modify DDL / DML Script
+
+Modify DDL / DML script to create your DB schema in yyy-migration/src/main/resources/db/migration directory.
+The name of script files follows <a href="https://flywaydb.org/documentation/migrations#sql-based-migrations" target="sql-migration">Flyway rules</a>.
+
+
+You can execute those script files with the following command. 
+
+```sh
+# Widows
+mvnw -f yyy-migration -P migrate
+
+# macOS
+./mvnw -f yyy-migration -P migrate
+```
+
+
+### Modify Target Tables to Generate to JPA Entity
+
+Modify yyy-entity/hibernate.reveng.xml file to add target tables to genereate to JPA entity.
+
+
+```xml
+<hibernate-reverse-engineering>
+
+  <!-- This is sample, so remove after modifing DB schema. -->
+  <table-filter match-name="person" package="io.sitoolkit.dba.domain.persion"></table-filter>
+
+  <!--  Add your target tables and those entity packages. -->
+  <table-filter match-name="YOUR TABLE" package="YOUR PACKAGE OF ENTITY CLASS"></table-filter>
+
+</hibernate-reverse-engineering>
+```
+
+After modifying, you can generate entities with command.
+
+```sh
+# Windows
+mvnw -f yyy-entity -P reveng
+
+# macOS
+./mvnw -f yyy-entity -P reveng
+```
