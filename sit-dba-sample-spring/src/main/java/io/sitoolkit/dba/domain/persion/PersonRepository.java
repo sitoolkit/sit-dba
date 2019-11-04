@@ -1,4 +1,4 @@
-package io.sitoolkit.refimpl.db.domain.persion;
+package io.sitoolkit.dba.domain.persion;
 
 import java.util.List;
 

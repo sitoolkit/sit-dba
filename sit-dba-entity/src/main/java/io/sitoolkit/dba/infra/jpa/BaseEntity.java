@@ -1,4 +1,4 @@
-package io.sitoolkit.refimpl.db.entity.infra.jpa;
+package io.sitoolkit.dba.infra.jpa;
 
 import java.time.LocalDateTime;
 

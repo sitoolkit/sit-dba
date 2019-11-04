@@ -1,4 +1,4 @@
-package io.sitoolkit.refimpl.db.entity;
+package io.sitoolkit.dba.entity.infra.jpa;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +45,7 @@ public class CustomReverseEngineeringStrategy extends DelegatingReverseEngineeri
     addMeta(map, "use-in-equals", "true");
     addMeta(map, "use-in-tostring", "true");
     addMeta(map, "extends", "BaseEntity");
-    addMeta(map, "extra-import", "io.sitoolkit.refimpl.db.entity.infra.jpa.BaseEntity");
+    addMeta(map, "extra-import", "io.sitoolkit.dba.infra.jpa.BaseEntity");
 
     return map;
   }

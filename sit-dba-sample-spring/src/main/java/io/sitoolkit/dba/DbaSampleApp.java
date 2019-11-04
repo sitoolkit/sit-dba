@@ -1,4 +1,4 @@
-package io.sitoolkit.refimpl.db;
+package io.sitoolkit.dba;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

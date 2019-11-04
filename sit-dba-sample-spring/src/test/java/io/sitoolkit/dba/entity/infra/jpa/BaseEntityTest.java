@@ -1,4 +1,4 @@
-package io.sitoolkit.refimpl.db.entity.infra.jpa;
+package io.sitoolkit.dba.entity.infra.jpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import io.sitoolkit.refimpl.db.domain.persion.PersonEntity;
+import io.sitoolkit.dba.domain.persion.PersonEntity;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration

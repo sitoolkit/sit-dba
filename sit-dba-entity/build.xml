@@ -11,7 +11,7 @@
 
       <jdbcconfiguration packagename="package.name"
                          revengfile="${basedir}/hibernate.reveng.xml"
-                         reversestrategy="io.sitoolkit.refimpl.db.entity.CustomReverseEngineeringStrategy"
+                         reversestrategy="io.sitoolkit.dba.entity.infra.jpa.CustomReverseEngineeringStrategy"
                          propertyFile="${project.build.directory}/hibernate.reveng.properties" />
 
       <hbm2java jdk5="true" ejb3="true" />
