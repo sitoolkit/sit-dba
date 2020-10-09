@@ -90,7 +90,7 @@ The parameters to connect DB are defined in root pom.xml and passed to Flyway in
     <db.jdbc.url>jdbc:postgresql://${db.host}:${db.port}/${db.name}?currentSchema=${db.schema}</db.jdbc.url>
     <db.username>postgres</db.username>
     <db.password>postgres</db.password>
-    <db.schema>sit_db</db.schema>
+    <db.schema>${project.parent.artifactId}</db.schema>
   </properties>
 ```
 
