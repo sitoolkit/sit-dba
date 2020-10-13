@@ -77,6 +77,10 @@
                    match="-DarchetypeVersion=.* "
                    replace="-DarchetypeVersion=${version} " />
 
+    <replaceregexp file="src/archetype/build.xml"
+                   match="-DarchetypeVersion=.*&quot;"
+                   replace="-DarchetypeVersion=${version}&quot;" />
+
   </target>
 
 </project>
