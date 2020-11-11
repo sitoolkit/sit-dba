@@ -1,3 +1,5 @@
+[日本語](README_ja.md)
+
 # DB Administrator
 
 SI-Toolkit for DB Administrator is a tool of DB migration, JPA (Java Persistence API) reverse engineering and DB design document generation.
