@@ -97,6 +97,12 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>io.sitoolkit.bt</groupId>
+        <artifactId>sit-bt-maven-plugin</artifactId>
+        <version>0.9-SNAPSHOT</version>
+      </plugin>
+
     </plugins>
 
     <pluginManagement>
