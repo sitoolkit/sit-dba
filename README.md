@@ -158,7 +158,7 @@ You can generate a new project using the following maven command.
 mvn archetype:generate -B \
     -DarchetypeGroupId=io.sitoolkit.dba \
     -DarchetypeArtifactId=sit-dba-archetype \
-    -DarchetypeVersion=1.1.0-SNAPSHOT \
+    -DarchetypeVersion=1.0.1 \
     -DgroupId=xxx \
     -DartifactId=yyy
 ```

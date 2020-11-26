@@ -66,7 +66,7 @@
     <exec executable="${mvnw}" dir="${workdir}" failonerror="true">
       <arg line="archetype:generate -B -DarchetypeGroupId=io.sitoolkit.dba"/>
       <arg line="-DarchetypeArtifactId=sit-dba-archetype"/>
-      <arg line="-DarchetypeVersion=1.1.0-SNAPSHOT"/>
+      <arg line="-DarchetypeVersion=1.0.1"/>
       <arg line="-DgroupId=a.b.c"/>
       <arg line="-DartifactId=${project}"/>
     </exec>
