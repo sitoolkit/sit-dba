@@ -13,9 +13,14 @@
       <groupId>${db.jdbc.groupId}</groupId>
       <artifactId>${db.jdbc.artifactId}</artifactId>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>sit-dba-csvloader</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
-  
+
   <properties>
     <flyway.version>7.3.2</flyway.version>
   </properties>
@@ -60,7 +65,7 @@
     <profile>
       <id>migrate</id>
       <build>
-        <defaultGoal>clean process-resources flyway:clean flyway:migrate flyway:info</defaultGoal>
+        <defaultGoal>clean compile flyway:clean flyway:migrate flyway:info</defaultGoal>
       </build>
     </profile>
 
