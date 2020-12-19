@@ -39,6 +39,7 @@
     <property name="archetyperesdir" value="${archetypedir}/src/main/resources/archetype-resources"/>
 
     <delete file="${archetyperesdir}/README.md"/>
+    <delete file="${archetyperesdir}/README_ja.md"/>
     <delete file="${archetyperesdir}/src/archetype/build.xml"/>
     <delete file="${archetyperesdir}/src/archetype/pom.xml"/>
     <delete>
@@ -51,6 +52,9 @@
         
     <copy file="${basedir}/src/archetype/pom.xml" tofile="${archetypedir}/pom.xml" overwrite="true"/>
     
+    <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${groupId}.util" value="io.sitoolkit.dba.util"/>
+    <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${rootArtifactId}-csvloader" value="sit-dba-csvloader"/>
+
   </target>
 
   
