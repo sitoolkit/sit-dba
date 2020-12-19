@@ -14,7 +14,7 @@
       <artifactId>${db.jdbc.artifactId}</artifactId>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>io.sitoolkit.dba</groupId>
       <artifactId>sit-dba-csvloader</artifactId>
       <version>${csvloader.version}</version>
     </dependency>
