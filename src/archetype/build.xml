@@ -26,6 +26,10 @@
     </exec>
 
     <exec executable="${mvnw}" failonerror="true">
+      <arg line="clean install -N"/>
+    </exec>
+
+    <exec executable="${mvnw}" failonerror="true">
       <arg line="clean install -f sit-dba-csvloader"/>
     </exec>
 
@@ -53,7 +57,8 @@
     <delete includeemptydirs="true">
       <fileset dir="${archetypedir}" includes="**/.settings/" defaultexcludes="false"/>
     </delete>
-        
+    <delete dir="${archetyperesdir}/__rootArtifactId__-csvloader"/>
+
     <copy file="${basedir}/src/archetype/pom.xml" tofile="${archetypedir}/pom.xml" overwrite="true"/>
     
     <property name="marker" value="&lt;!-- marker for artifact --&gt;"/>
