@@ -52,8 +52,11 @@
         
     <copy file="${basedir}/src/archetype/pom.xml" tofile="${archetypedir}/pom.xml" overwrite="true"/>
     
-    <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${groupId}.util" value="io.sitoolkit.dba.util"/>
+    <property name="marker" value="&lt;!-- marker for artifact --&gt;"/>
+
+    <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${groupId}&lt;/groupId&gt;${marker}" value="io.sitoolkit.dba&lt;/groupId&gt;"/>
     <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${rootArtifactId}-csvloader" value="sit-dba-csvloader"/>
+    <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${version}&lt;/version&gt;${marker}" value="${project.version}&lt;/version&gt;"/>
 
   </target>
 

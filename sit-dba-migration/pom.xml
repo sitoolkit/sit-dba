@@ -14,15 +14,14 @@
       <artifactId>${db.jdbc.artifactId}</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.sitoolkit.dba.util</groupId>
+      <groupId>io.sitoolkit.dba</groupId><!-- marker for artifact -->
       <artifactId>sit-dba-csvloader</artifactId>
-      <version>${csvloader.version}</version>
+      <version>${project.version}</version><!-- marker for artifact -->
     </dependency>
   </dependencies>
 
 
   <properties>
-    <csvloader.version>1.1.0-SNAPSHOT</csvloader.version>
     <flyway.version>7.3.2</flyway.version>
   </properties>
 
