@@ -85,6 +85,10 @@
                    match="-DarchetypeVersion=.*&quot;"
                    replace="-DarchetypeVersion=${version}&quot;" />
 
+    <replaceregexp file="sit-dba-migration/pom.xml"
+                   match="&lt;csvloader.version&gt;.*&lt;/csvloader.version&gt;"
+                   replace="&lt;csvloader.version&gt;${version}&lt;/csvloader.version&gt;" />
+
   </target>
 
    <target name="translate-readme">

@@ -16,12 +16,13 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>sit-dba-csvloader</artifactId>
-      <version>${project.version}</version>
+      <version>${csvloader.version}</version>
     </dependency>
   </dependencies>
 
 
   <properties>
+    <csvloader.version>1.1.0-SNAPSHOT</csvloader.version>
     <flyway.version>7.3.2</flyway.version>
   </properties>
 
