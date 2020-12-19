@@ -25,6 +25,10 @@
       <arg line="clean install"/>
     </exec>
 
+    <exec executable="${mvnw}" failonerror="true">
+      <arg line="clean install -f sit-dba-csvloader"/>
+    </exec>
+
     <antcall target="test"/>
 
   </target>
