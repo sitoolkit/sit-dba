@@ -62,7 +62,7 @@
   
   <target name="set-version">
 
-    <property name="version" value="1.0.1"/>
+    <property name="version" value="1.1.0-SNAPSHOT"/>
 
     <exec executable="${mvn.cmd}">
       <arg line="versions:set -DnewVersion=${version} -DgenerateBackupPoms=false" />
@@ -74,6 +74,10 @@
     </exec>
 
     <replaceregexp file="README.md"
+                   match="-DarchetypeVersion=.* "
+                   replace="-DarchetypeVersion=${version} " />
+
+    <replaceregexp file="README_ja.md"
                    match="-DarchetypeVersion=.* "
                    replace="-DarchetypeVersion=${version} " />
 

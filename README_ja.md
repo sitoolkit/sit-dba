@@ -154,7 +154,7 @@ sit-dbaの基本的な使用方法は、次の手順です。
 mvn archetype:generate -B \
     -DarchetypeGroupId=io.sitoolkit.dba \
     -DarchetypeArtifactId=sit-dba-archetype \
-    -DarchetypeVersion=1.0.0 \
+    -DarchetypeVersion=1.1.0-SNAPSHOT \
     -DgroupId=xxx \
     -DartifactId=yyy
 ```
