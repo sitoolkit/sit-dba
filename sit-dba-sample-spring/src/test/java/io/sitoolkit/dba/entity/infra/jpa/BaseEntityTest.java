@@ -22,7 +22,7 @@ public class BaseEntityTest {
 
   @Test
   public void test() {
-    em.persist(new PersonEntity(1, "entity"));
+    em.persist(new PersonEntity(101, "entity"));
     em.flush();
 
     PersonEntity entity = em.find(PersonEntity.class, 1, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
