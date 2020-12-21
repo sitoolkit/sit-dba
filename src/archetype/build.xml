@@ -18,9 +18,7 @@
 
   
   <target name="install">
-    
-    <antcall target="create-archetype" />
-    
+
     <exec executable="${mvnw}" failonerror="true">
       <arg line="clean install -N"/>
     </exec>
@@ -28,6 +26,8 @@
     <exec executable="${mvnw}" failonerror="true">
       <arg line="clean install -f sit-dba-csvloader"/>
     </exec>
+
+    <antcall target="create-archetype" />
 
     <exec executable="${mvnw}" dir="${archetypedir}" failonerror="true">
       <arg line="clean install"/>
