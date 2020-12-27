@@ -18,7 +18,6 @@
   </dependencyManagement>
 
   <modules>
-    <module>sit-dba-csvloader</module>
     <module>sit-dba-entity</module>
     <module>sit-dba-migration</module>
     <module>sit-dba-sample-spring</module>

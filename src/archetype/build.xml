@@ -57,17 +57,10 @@
     <delete includeemptydirs="true">
       <fileset dir="${archetypedir}" includes="**/.settings/" defaultexcludes="false"/>
     </delete>
-    <!-- TODO exclude sit-dba-csvloader from archetype -->
-    <!-- <delete dir="${archetyperesdir}/__rootArtifactId__-csvloader"/> -->
 
     <copy file="${basedir}/src/archetype/pom.xml" tofile="${archetypedir}/pom.xml" overwrite="true"/>
     
     <property name="marker" value="&lt;!-- marker for artifact --&gt;"/>
-
-    <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${groupId}&lt;/groupId&gt;${marker}" value="io.sitoolkit.dba&lt;/groupId&gt;"/>
-    <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${rootArtifactId}-csvloader" value="sit-dba-csvloader"/>
-    <replace file="${archetyperesdir}/__rootArtifactId__-migration/pom.xml" token="${version}&lt;/version&gt;${marker}" value="${project.version}&lt;/version&gt;"/>
-    <replace file="${archetyperesdir}/__rootArtifactId__-migration/src/main/java/db/migration/V2__AddRecords.java" token="${package}.CsvLoader" value="io.sitoolkit.dba.CsvLoader"/>
 
   </target>
 

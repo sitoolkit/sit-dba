@@ -14,9 +14,9 @@
       <artifactId>${db.jdbc.artifactId}</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.sitoolkit.dba</groupId><!-- marker for artifact -->
-      <artifactId>sit-dba-csvloader</artifactId>
-      <version>${project.version}</version><!-- marker for artifact -->
+      <groupId>io.sitoolkit.csv</groupId>
+      <artifactId>sit-csvloader-core</artifactId>
+      <version>0.8-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
