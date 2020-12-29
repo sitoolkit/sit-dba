@@ -16,7 +16,7 @@
     <dependency>
       <groupId>io.sitoolkit.csv</groupId>
       <artifactId>sit-csvloader-core</artifactId>
-      <version>0.8-SNAPSHOT</version>
+      <version>0.8</version>
     </dependency>
   </dependencies>
 
