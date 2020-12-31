@@ -1,14 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!-- The Basics -->
   <artifactId>sit-dba-migration</artifactId>
 
   <dependencies>
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-commandline</artifactId>
-      <version>${flyway.version}</version>
-    </dependency>
     <dependency>
       <groupId>${db.jdbc.groupId}</groupId>
       <artifactId>${db.jdbc.artifactId}</artifactId>
@@ -20,11 +17,9 @@
     </dependency>
   </dependencies>
 
-
   <properties>
     <flyway.version>7.3.2</flyway.version>
   </properties>
-
 
   <parent>
     <groupId>io.sitoolkit.dba</groupId>
@@ -33,6 +28,7 @@
   </parent>
 
 
+  <!-- Build Settings -->
   <build>
 
     <resources>
@@ -51,15 +47,15 @@
         <artifactId>flyway-maven-plugin</artifactId>
         <version>${flyway.version}</version>
         <configuration>
-          <configFiles>${project.build.outputDirectory}/flyway.properties</configFiles>
+          <configFiles>${project.build.outputDirectory}/flyway.conf,${project.build.outputDirectory}/flyway-local.conf</configFiles>
           <validateOnMigrate>false</validateOnMigrate>
         </configuration>
       </plugin>
     </plugins>
 
-
   </build>
 
+  <!-- Environment Settings -->
   <profiles>
 
     <profile>
@@ -68,7 +64,6 @@
         <defaultGoal>clean compile flyway:clean flyway:migrate flyway:info</defaultGoal>
       </build>
     </profile>
-
 
     <profile>
       <id>deploy</id>
@@ -81,6 +76,13 @@
         </dependency>
       </dependencies>
 
+      <properties>
+        <db.host>host.docker.internal</db.host>
+        <docker.targetDir>/flyway/jars</docker.targetDir>
+        <classifier.all>all-deps</classifier.all>
+        <uberJar>${project.artifactId}-${project.version}-${classifier.all}.jar</uberJar>
+      </properties>
+
       <build>
 
         <resources>
@@ -88,7 +90,7 @@
             <directory>src/main/resources</directory>
           </resource>
         </resources>
-  
+
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -121,6 +123,53 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.34.1</version>
+            <configuration>
+              <images>
+                <image>
+                  <build>
+                    <assembly>
+                      <inline>
+                        <files>
+                          <file>
+                            <source>src/local/resources/flyway.conf</source>
+                            <outputDirectory/>
+                          </file>
+                          <file>
+                            <source>${project.build.directory}/${uberJar}</source>
+                            <outputDirectory/>
+                          </file>
+                        </files>
+                      </inline>
+                      <targetDir>${docker.targetDir}</targetDir>
+                    </assembly>
+                    <cmd>["migrate", "info"]</cmd>
+                    <entryPoint>
+                      <exec>
+                        <arg>java</arg>
+                        <arg>-XX:MaxRAMPercentage=75</arg>
+                        <arg>-jar</arg>
+                        <arg>${uberJar}</arg>
+                      </exec>
+                    </entryPoint>
+                    <env>
+                      <FLYWAY_URL>${db.jdbc.url}</FLYWAY_URL>
+                      <FLYWAY_USER>${db.username}</FLYWAY_USER>
+                      <FLYWAY_PASSWORD>${db.password}</FLYWAY_PASSWORD>
+                      <FLYWAY_SCHEMAS>${db.schema}</FLYWAY_SCHEMAS>
+                    </env>
+                    <from>amazoncorretto:11-alpine</from>
+                    <workdir>${docker.targetDir}</workdir>
+                  </build>
+                  <name>${project.name}</name>
+                </image>
+              </images>
+            </configuration>
           </plugin>
         </plugins>
       </build>
