@@ -24,21 +24,6 @@
   </modules>
 
   <properties>
-    <admin.port>80</admin.port>
-  
-    <db.jdbc.groupId>org.postgresql</db.jdbc.groupId>
-    <db.jdbc.artifactId>postgresql</db.jdbc.artifactId>
-    <db.jdbc.version>42.2.8</db.jdbc.version>
-    <db.jdbc.driver>org.postgresql.Driver</db.jdbc.driver>
-    <db.name>postgres</db.name>
-    <db.host>localhost</db.host>
-    <db.port>5432</db.port>
-    <db.jdbc.url>jdbc:postgresql://${db.host}:${db.port}/${db.name}?currentSchema=${db.schema}</db.jdbc.url>
-    <db.username>postgres</db.username>
-    <db.password>postgres</db.password>
-    <db.schema>${project.parent.artifactId}</db.schema>
-    <schemaspy.db.type>pgsql</schemaspy.db.type>
-
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
@@ -107,14 +92,9 @@
       <plugins>
         <plugin>
           <artifactId>maven-antrun-plugin</artifactId>
-          <version>1.8</version>
+          <version>3.0.0</version>
           <inherited>false</inherited>
           <dependencies>
-            <dependency>
-              <groupId>org.apache.ant</groupId>
-              <artifactId>ant</artifactId>
-              <version>1.10.9</version>
-            </dependency>
             <dependency>
               <groupId>ant-contrib</groupId>
               <artifactId>ant-contrib</artifactId>
@@ -125,5 +105,32 @@
       </plugins>
     </pluginManagement>
   </build>
+
+
+  <profiles>
+    <profile>
+      <id>local-db</id>
+
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+
+      <properties>
+        <db.admin.port>80</db.admin.port>
+        <db.jdbc.groupId>org.postgresql</db.jdbc.groupId>
+        <db.jdbc.artifactId>postgresql</db.jdbc.artifactId>
+        <db.jdbc.version>42.2.8</db.jdbc.version>
+        <db.jdbc.driver>org.postgresql.Driver</db.jdbc.driver>
+        <db.name>postgres</db.name>
+        <db.host>localhost</db.host>
+        <db.port>5432</db.port>
+        <db.jdbc.url>jdbc:postgresql://${db.host}:${db.port}/${db.name}?currentSchema=${db.schema}</db.jdbc.url>
+        <db.username>postgres</db.username>
+        <db.password>postgres</db.password>
+        <db.schema>${project.parent.artifactId}</db.schema>
+        <schemaspy.db.type>pgsql</schemaspy.db.type>
+      </properties>
+    </profile>
+  </profiles>
 
 </project>
