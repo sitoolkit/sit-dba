@@ -94,13 +94,6 @@
           <artifactId>maven-antrun-plugin</artifactId>
           <version>3.0.0</version>
           <inherited>false</inherited>
-          <dependencies>
-            <dependency>
-              <groupId>ant-contrib</groupId>
-              <artifactId>ant-contrib</artifactId>
-              <version>1.0b3</version>
-            </dependency>
-          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
