@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   dbms:
-    image: postgres
+    image: postgres:12
     environment:
       TZ: ${OS_TIMEZONE}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
