@@ -1,0 +1,34 @@
+= DB Administrator
+
+== 概要
+
+DB Administrator (sit-dba)は、DBを使用するJavaアプリケーションの開発に必要な以下のツールがすぐに使用できるプロジェクトテンプレートです。
+
+- DB マイグレーション (https://flywaydb.org/[Flyway])
+- DB 設計ドキュメント生成 (http://schemaspy.org/[SchemaSpy])
+- JPA リバースエンジニアリング (https://docs.jboss.org/tools/latest/en/hibernatetools/html/reverseengineering.html[Hibernate Tools])
+
+sit-dbaの動作を以下の図で説明します。
+
+.sit-dbaの動作
+image::../images/overview.svg[]
+
+1. *create project*: sit-dbaのプロジェクトテンプレートを用いてプロジェクトを作成します。sit-dbaはプロジェクトのビルドツールにMavenを使用します。
+2. *DB migration*: DBマイグレーションツールを使用してDDLスクリプトからDBにテーブルを作成します。sit-dbaはDBマイグレーションツールにFlywayを使用します。
+3. *reverse engineering*: リバースエンジニアリングツールを使用してDBのメタデータからJPAエンティティのJavaクラスを生成します。sit-dbaはリバースエンジニアリングツールにHibernate Toolsを使用します。
+4. *generate docs*: DB設計ドキュメント生成ツールを使用してDBのメタデータからER図、テーブル一覧等のDB設計ドキュメントを生成します。DB設計ドキュメント生成ツールにSchemaSpyを使用します。
+
+
+また、図中の各要素を説明します。
+
+- *project* : sit-dbaを使用して作成したMavenプロジェクトです。
+- *project-migration* : projectのサブプロジェクトです。DBマイグレーションに使用する資材(DDLスクリプト、マスターデータ等)を配置します。
+- *project-entity* : projectのサブプロジェクトです。リバースエンジニアリングで生成したJavaファイルを配置します。
+- *V1__Initialize.sql* : DBマイグレーションに使用するDDLスクリプトです。
+- *ENTITY_1, ENTITY_2* : DDLスクリプトで作成したテーブルです。
+- *Entity1.java, Entity2.java* : リバースエンジニアリングで生成したJPA エンティティのJavaクラスです。
+- *db-docs*: DB設計ドキュメント生成ツールで生成したDB設計ドキュメントです。ドキュメントのファイル形式はHTML、CSS等のWeb資材でブラウザで参照します。
+
+include::user-guide.adoc[]
+
+include::appendix.adoc[]

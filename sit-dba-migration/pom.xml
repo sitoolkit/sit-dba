@@ -71,7 +71,11 @@
     </profile>
 
     <profile>
-      <id>deploy</id>
+      <id>packaging-for-deployment</id>
+
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
 
       <dependencies>
         <dependency>
@@ -89,6 +93,8 @@
       </properties>
 
       <build>
+
+        <defaultGoal>clean package docker:build</defaultGoal>
 
         <resources>
           <resource>

@@ -1,0 +1,190 @@
+= ユーザーガイド
+
+== 必要なソフトウェア
+
+sit-dbaを使用するには以下のソフトウェアが必要です。
+
+- JDK 11+
+- Docker
+- Maven 3+ または Mavenに対応したIDE
+
+これらのソフトウェアを簡単にインストールする方法は<<easy-install>>を参照してください。
+
+
+== プロジェクトの作成
+
+sit-dbaのプロジェクトはMavenアーキタイプから作成することが出来ます。
+
+=== CLI
+
+sit-dbaのプロジェクトをCLIで作成するには、コマンドプロンプト(Windows)またはターミナル(macOS)で以下のコマンドを実行します。GROUP_ID、ARTIFACT_IDの値は適宜変更してください。
+
+.Windows
+----
+cd \path\to\your\workspace
+
+set GROUP_ID=your.group.id
+set ARTIFACT_ID=your-artifact-id
+
+mvn org.apache.maven.plugins:maven-archetype-plugin:3.2.0:generate -B ^
+    -DarchetypeGroupId=io.sitoolkit.dba ^
+    -DarchetypeArtifactId=sit-dba-archetype ^
+    -DarchetypeVersion=1.1.0-SNAPSHOT ^
+    -DgroupId=%GROUP_ID% ^
+    -DartifactId=%ARTIFACT_ID%
+----
+
+.macOS
+----
+cd /path/to/your/workspace
+
+export GROUP_ID=your.group.id
+export ARTIFACT_ID=your-artifact-id
+
+mvn org.apache.maven.plugins:maven-archetype-plugin:3.2.0:generate -B \
+    -DarchetypeGroupId=io.sitoolkit.dba \
+    -DarchetypeArtifactId=sit-dba-archetype \
+    -DarchetypeVersion=1.1.0-SNAPSHOT \
+    -DgroupId=$GROUP_ID \
+    -DartifactId=$ARTIFACT_ID
+----
+
+
+プロジェクトが正常に作成されると「BUILD SUCCESS」が表示されます。ARTIFACT_IDで指定した名前のディレクトリが作成されています。
+
+=== VSCode
+
+sit-dbaのプロジェクトはMavenに対応したIDEでも作成することが出来ます。ここではIDEの例としてVSCodeを使った方法を説明します。
+
+1. Command + Shift + P (macOS)
+2. Maven:Create Maven Project
+
+TODO: 追記とスクリーンショット
+
+
+== プロジェクトのビルド
+
+上記で作成したプロジェクトのディレクトリ直下で以下のコマンドを実行します。
+
+.Windows
+----
+mvnw -N
+----
+
+
+.macOS
+----
+./mvnw -N
+----
+
+上記のコマンドを実行すると以下の処理が行われます。
+
+1. DBMSの起動 (docker-compose)
+2. DBマイグレーションの実行
+3. リバースエンジニアリングの実行
+4. DBドキュメントの生成
+
+全ての処理が正常に終了すると「BUILD SUCCESS」が表示されます。ブラウザで http://localhost にアクセスすると、phpPgAdminの画面が表示されます。ユーザー名：postgres、パスワード：postgresでログインするとDBマイグレーション後のテーブルが参照できます。
+
+
+== DB マイグレーション
+
+ここではsit-dbaのDBマイグレーション機能を説明します。
+sit-dbaのDBマイグレーションに関する資材はmigrationプロジェクト以下に集約されています。
+まず、migrationプロジェクトのディレクトリ構成を説明します。
+
+.ディレクトリ構成
+----
+project
+  project-migration
+    src/local/resources
+      flyway-local.conf  <1>
+      flyway.conf  <2>
+    src/main
+      java
+        db/migration  <3>
+      resources
+        db/migration  <4>
+----
+<1> ローカルPCでのみ有効になる https://flywaydb.org/documentation/configuration/configfile[Flyway Config File] です。
+<2> 全環境で有効になるFlyway Config Fileです。
+<3> https://flywaydb.org/documentation/concepts/migrations#sql-based-migrations[SQL-based migration] に使用するSQLスクリプトファイルを配置します。
+<4> https://flywaydb.org/documentation/concepts/migrations#java-based-migrations[Java-based migration] に使用するJavaソースファイルを配置します。
+
+[NOTE]
+====
+sit-dbaはJava-based migrationのサンプルとしてCSVファイルをロードする実装を同梱しています。実装の詳細は https://github.com/sitoolkit/sit-cl[SI-Toolkit CSV Loader] を参照してください。
+====
+
+上記のディレクトリ構成に従いDBマイグレーション資材を配置した後、以下のコマンドでDBマイグレーションを実行します。
+
+.Windows
+----
+mvnw -f project-migration -P migrate
+----
+
+.macOS
+----
+./mvnw -f project-migration -P migrate
+----
+
+上記のコマンドでは https://flywaydb.org/documentation/usage/maven/[Flyway Maven Plugin] の
+「flyway:clean flyway:migrate flyway:info」の3つのゴールを一括で実行します。Flyway Maven Pluginは個別に実行することもできます。
+
+.Windows
+----
+mvnw -f project-migration flyway:info
+----
+
+.macOS
+----
+./mvnw -f project-migration flyway:info
+----
+
+
+=== テスト・本番環境への展開
+
+ここではDBマイグレーションをローカル環境以外のテスト・本番環境へ適用する方法を説明します。
+
+まず、プロジェクト直下で以下のコマンドを実行します。
+
+.Windows
+----
+mvnw -f project-migration
+----
+
+.macOS
+----
+./mvnw -f project-migration
+----
+
+コマンドが正常に終了すると、以下の2つの成果物が作成されます。
+
+- project-migration/target/project-migration-xxx-all-deps.jar
+- Docker Image : project-migration:latest
+
+all-deps.jarはDBマイグレーション資材を格納した単独実行可能なjarファイルです。以下の様なjavaコマンドで実行することが出来ます。DBの接続先等は引数で指定します。指定可能な引数は https://flywaydb.org/documentation/usage/commandline/#command-line-arguments[Flyway CLIと同じもの] です。
+
+[NOTE]
+====
+flyway.confに全環境に適用すべきパラメーターを定義している場合は、flyway.confをall-deps.jarと同じディレクトリに配置して実行してください。
+====
+
+.all-deps.jarを実行するjavaコマンド
+----
+java -jar project-migration-xxx-all-deps.jar -url=xxx -user=xxx -password=xxx migrate
+----
+
+Docker Imageはall-deps.jarをコンテナ起動時に実行するように構成されています。flyway.confも適用されるように同梱しています。DBの接続先等はコンテナの環境変数で指定します。指定可能な環境変数は https://flywaydb.org/documentation/configuration/parameters/[Flywayと同じもの] です。
+
+.Docker Imageを実行するコマンド
+----
+docker run --rm -e FLYWAY_URL=xxx -e FLYWAY_USER=xxx -e FLYWAY_PASSWORD=xxx project-migration
+----
+
+
+== リバースエンジニアリング
+
+
+== DB設計ドキュメント生成
+
