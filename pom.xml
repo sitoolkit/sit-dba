@@ -29,7 +29,7 @@
     <maven.compiler.target>11</maven.compiler.target>
 
     <ant.target>install</ant.target>
-    <antfile>build.xml</antfile>
+    <ant.file>build.xml</ant.file>
   </properties>
 
 
@@ -62,7 +62,7 @@
         <inherited>false</inherited>
         <configuration>
           <target>
-            <ant antfile="${antfile}" target="${ant.target}" />
+            <ant antfile="${ant.file}" target="${ant.target}" />
           </target>
         </configuration>
       </plugin>

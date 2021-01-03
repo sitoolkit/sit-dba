@@ -4,13 +4,14 @@
     <os family="windows" />
   </condition>
 
-  <property name="archetypedir" value="${basedir}/target/generated-sources/archetype"/>
+  <property name="archetype.workdir" value="${basedir}/target/archetype-work"/>
+  <property name="archetype.gendir" value="${archetype.workdir}/target/generated-sources/archetype"/>
   
   <target name="deploy">
     
     <antcall target="install"/>
 
-    <exec executable="${mvnw}" dir="${archetypedir}" failonerror="true">
+    <exec executable="${mvnw}" dir="${archetype.gendir}" failonerror="true">
       <arg line="deploy -P release"/>
     </exec>
 
@@ -19,9 +20,11 @@
   
   <target name="install">
 
+    <antcall target="prepare-archetype" />
+
     <antcall target="create-archetype" />
 
-    <exec executable="${mvnw}" dir="${archetypedir}" failonerror="true">
+    <exec executable="${mvnw}" dir="${archetype.gendir}" failonerror="true">
       <arg line="clean install"/>
     </exec>
 
@@ -29,30 +32,30 @@
 
   </target>
 
+
+  <target name="prepare-archetype">
+
+    <property name="excluded-files" value="**/.classpath,**/.project,**/.settings/**,**/target/**"/>
+
+    <delete dir="${archetype.workdir}" />
+
+    <copy todir="${archetype.workdir}">
+      <fileset dir="${basedir}" includes="sit-dba-entity/**" excludes="${excluded-files}"/>
+      <fileset dir="${basedir}" includes="sit-dba-migration/**" excludes="${excluded-files}"/>
+      <fileset dir="${basedir}" includes="sit-dba-sample-spring/**" excludes="${excluded-files}"/>
+      <fileset dir="${basedir}" includes=".mvn/**,src/main/**,build.xml,docker-compose.yml,mvnw,mvnw.cmd,pom.xml" />
+    </copy>
+
+  </target>
+
   
   <target name="create-archetype">
-    
-    <exec executable="${mvnw}" dir="${basedir}" failonerror="true">
-      <arg line="clean archetype:create-from-project"/>
+
+    <exec executable="${mvnw}" dir="${archetype.workdir}" failonerror="true">
+      <arg line="archetype:create-from-project"/>
     </exec>
 
-    <property name="archetyperesdir" value="${archetypedir}/src/main/resources/archetype-resources"/>
-
-    <delete file="${archetyperesdir}/README.md"/>
-    <delete file="${archetyperesdir}/README_ja.md"/>
-    <delete file="${archetyperesdir}/src/archetype/build.xml"/>
-    <delete file="${archetyperesdir}/src/archetype/pom.xml"/>
-    <delete>
-      <fileset dir="${archetyperesdir}" includes="**/.classpath"/>
-      <fileset dir="${archetyperesdir}" includes="**/.project"/>
-    </delete>
-    <delete includeemptydirs="true">
-      <fileset dir="${archetypedir}" includes="**/.settings/" defaultexcludes="false"/>
-    </delete>
-
-    <copy file="${basedir}/src/archetype/pom.xml" tofile="${archetypedir}/pom.xml" overwrite="true"/>
-    
-    <property name="marker" value="&lt;!-- marker for artifact --&gt;"/>
+    <copy file="${basedir}/src/archetype/pom.xml" tofile="${archetype.gendir}/pom.xml" overwrite="true"/>
 
   </target>
 
@@ -67,7 +70,8 @@
     <mkdir dir="${workdir}" />
     
     <exec executable="${mvnw}" dir="${workdir}" failonerror="true">
-      <arg line="archetype:generate -B -DarchetypeGroupId=io.sitoolkit.dba"/>
+      <arg line="org.apache.maven.plugins:maven-archetype-plugin:3.2.0:generate -B"/>
+      <arg line="-DarchetypeGroupId=io.sitoolkit.dba"/>
       <arg line="-DarchetypeArtifactId=sit-dba-archetype"/>
       <arg line="-DarchetypeVersion=1.1.0-SNAPSHOT"/>
       <arg line="-DgroupId=a.b.c"/>
@@ -80,17 +84,16 @@
 
     <chmod perm="u+x" file="${projectdir}/mvnw" />
 
-    <replace file="${projectdir}/pom.xml" token="&lt;admin.port&gt;80" value="&lt;admin.port&gt;81"/>
+    <replace file="${projectdir}/pom.xml" token="&lt;db.admin.port&gt;80" value="&lt;db.admin.port&gt;81"/>
     <replace file="${projectdir}/pom.xml" token="&lt;db.port&gt;5432" value="&lt;db.port&gt;5433"/>
     
-    <exec executable="${mvnw.local}" dir="${projectdir}" failonerror="true">
+    <exec executable="${mvnw.local}" dir="${projectdir}">
+      <arg line="-N"/>
     </exec>
 
-    <!-- This comment out is because Jenkins slave can't execute docker-compose command.
     <exec executable="docker-compose" dir="${projectdir}">
       <arg line="rm -sf"/>
     </exec>
-    -->
 
   </target>
 
