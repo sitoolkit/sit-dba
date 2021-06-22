@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import io.sitoolkit.dba.domain.persion.PersonEntity;
+import io.sitoolkit.dba.domain.person.PersonEntity;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration

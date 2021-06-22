@@ -1,4 +1,4 @@
-package io.sitoolkit.dba.domain.persion;
+package io.sitoolkit.dba.domain.person;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

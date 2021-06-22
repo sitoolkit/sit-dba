@@ -244,7 +244,7 @@ Yyy - Modify the entity / hibernate. reveng. xml file to add target tables to be
 <hibernate-reverse-engineering>
 
 <! -- - Since this is a sample, delete it after modifying the DB schema -->
-<table-filter match-name="person" package="io.sitoolkit.dba.domain.persion"></table-filter>
+<table-filter match-name="person" package="io.sitoolkit.dba.domain.person"></table-filter>
 
 
 <! -- - Add target tables and their entity packages -->
