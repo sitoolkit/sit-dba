@@ -1,92 +1,188 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!-- The Basics -->
   <artifactId>sit-dba-migration</artifactId>
 
   <dependencies>
     <dependency>
+      <groupId>${db.jdbc.groupId}</groupId>
+      <artifactId>${db.jdbc.artifactId}</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-commandline</artifactId>
+      <artifactId>flyway-core</artifactId>
       <version>${flyway.version}</version>
     </dependency>
     <dependency>
-      <groupId>${db.jdbc.groupId}</groupId>
-      <artifactId>${db.jdbc.artifactId}</artifactId>
+      <groupId>io.sitoolkit.csv</groupId>
+      <artifactId>sit-csvloader-core</artifactId>
+      <version>0.8</version>
     </dependency>
   </dependencies>
 
   <properties>
-    <flyway.command></flyway.command>
-    <flyway.mainClass>org.flywaydb.commandline.Main</flyway.mainClass>
+    <flyway.version>7.3.2</flyway.version>
   </properties>
 
   <parent>
     <groupId>io.sitoolkit.dba</groupId>
     <artifactId>sit-dba</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0-SNAPSHOT</version>
   </parent>
 
 
+  <!-- Build Settings -->
   <build>
 
-    <plugins>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/local/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
 
+    <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.1</version>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>${flyway.version}</version>
         <configuration>
-          <transformers>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>${flyway.mainClass}</mainClass>
-            </transformer>
-          </transformers>
-          <createDependencyReducedPom>false</createDependencyReducedPom>
+          <configFiles>${project.build.outputDirectory}/flyway.conf,${project.build.outputDirectory}/flyway-local.conf</configFiles>
+          <validateOnMigrate>false</validateOnMigrate>
         </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
-      
     </plugins>
 
   </build>
 
+  <!-- Environment Settings -->
   <profiles>
+
     <profile>
       <id>migrate</id>
+      <build>
+        <defaultGoal>clean compile flyway:clean flyway:migrate flyway:info</defaultGoal>
+      </build>
+    </profile>
+
+    <profile>
+      <id>packaging-for-deployment</id>
+
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+
+      <dependencies>
+        <dependency>
+          <groupId>org.flywaydb</groupId>
+          <artifactId>flyway-commandline</artifactId>
+          <version>${flyway.version}</version>
+        </dependency>
+      </dependencies>
+
+      <properties>
+        <db.host>host.docker.internal</db.host>
+        <docker.targetDir>/flyway/jars</docker.targetDir>
+        <classifier.all>all-deps</classifier.all>
+        <uberJar>${project.artifactId}-${project.version}-${classifier.all}.jar</uberJar>
+      </properties>
 
       <build>
-        <defaultGoal>process-resources exec:java</defaultGoal>
+
+        <defaultGoal>clean package docker:build</defaultGoal>
 
         <resources>
           <resource>
             <directory>src/main/resources</directory>
           </resource>
-          <resource>
-            <directory>src/local/resources</directory>
-            <filtering>true</filtering>
-          </resource>
         </resources>
 
         <plugins>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version>
             <configuration>
-              <mainClass>${flyway.mainClass}</mainClass>
-              <cleanupDaemonThreads>false</cleanupDaemonThreads>
-              <commandlineArgs>clean migrate info -configFiles=${project.build.outputDirectory}/flyway.properties -validateOnMigrate=false</commandlineArgs>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>${classifier.all}</shadedClassifierName>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.flywaydb.commandline.Main</mainClass>
+                </transformer>
+              </transformers>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.34.1</version>
+            <configuration>
+              <images>
+                <image>
+                  <build>
+                    <assembly>
+                      <inline>
+                        <files>
+                          <file>
+                            <source>src/local/resources/flyway.conf</source>
+                            <outputDirectory/>
+                          </file>
+                          <file>
+                            <source>${project.build.directory}/${uberJar}</source>
+                            <outputDirectory/>
+                          </file>
+                        </files>
+                      </inline>
+                      <targetDir>${docker.targetDir}</targetDir>
+                    </assembly>
+                    <cmd>["migrate", "info"]</cmd>
+                    <entryPoint>
+                      <exec>
+                        <arg>java</arg>
+                        <arg>-XX:MaxRAMPercentage=75</arg>
+                        <arg>-jar</arg>
+                        <arg>${uberJar}</arg>
+                      </exec>
+                    </entryPoint>
+                    <env>
+                      <FLYWAY_URL>${db.jdbc.url}</FLYWAY_URL>
+                      <FLYWAY_USER>${db.username}</FLYWAY_USER>
+                      <FLYWAY_PASSWORD>${db.password}</FLYWAY_PASSWORD>
+                      <FLYWAY_SCHEMAS>${db.schema}</FLYWAY_SCHEMAS>
+                    </env>
+                    <from>amazoncorretto:11-alpine</from>
+                    <workdir>${docker.targetDir}</workdir>
+                  </build>
+                  <name>${project.name}</name>
+                </image>
+              </images>
             </configuration>
           </plugin>
         </plugins>
-
       </build>
     </profile>
   </profiles>

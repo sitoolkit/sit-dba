@@ -1,4 +1,4 @@
-package io.sitoolkit.dba.domain.persion;
+package io.sitoolkit.dba.domain.person;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -23,7 +23,7 @@ public class PersonRepositoryTest {
   @Test
   public void test() {
     PersonEntity person = new PersonEntity();
-    person.setId(1);
+    person.setId(100);
     person.setName("name");
     repository.save(person);
 

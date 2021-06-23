@@ -15,8 +15,8 @@
 
   <table-filter match-name="flyway_schema_history" exclude="true" />
 
-  <table-filter match-name="person" package="io.sitoolkit.dba.domain.persion"></table-filter>
-  <table-filter match-name="person_relation" package="io.sitoolkit.dba.domain.persion"></table-filter>
-  <table-filter match-name="person_address" package="io.sitoolkit.dba.domain.persion"></table-filter>
+  <table-filter match-name="person" package="io.sitoolkit.dba.domain.person"></table-filter>
+  <table-filter match-name="person_relation" package="io.sitoolkit.dba.domain.person"></table-filter>
+  <table-filter match-name="person_address" package="io.sitoolkit.dba.domain.person"></table-filter>
 
 </hibernate-reverse-engineering>

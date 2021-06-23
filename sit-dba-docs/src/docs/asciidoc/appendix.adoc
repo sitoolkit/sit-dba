@@ -1,0 +1,48 @@
+= 補足
+
+[[easy-install]]
+== 必要なソフトウェアの簡単なインストール方法
+
+ここではsit-dbaを使用するのに必要なソフトウェアの簡単なインストール方法を紹介します。
+
+=== Windows
+
+ここでは https://chocolatey.org/install[Chocolatey] というパッケージマネージャーを使ったインストール方法を紹介します。
+
+始めに、PowerShellを管理者として起動し、以下のコマンドを実行してChocolateyをインストールします。
+
+[source,ps1]
+----
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+----
+
+
+次に、コマンドプロンプトを管理者として起動し、以下のコマンドで必要なソフトウェアをインストールします。
+
+----
+choco install -y corretto11jdk
+choco install -y docker
+choco install -y maven
+choco install -y vscode
+----
+
+
+=== macOS
+
+ここでは https://brew.sh/index_ja[HomeBrew] というパッケージマネージャーを使ったインストール方法を紹介します。
+
+始めに、ターミナルを起動し、以下のコマンドを実行してHomeBrewをインストールします。
+
+----
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+----
+
+次に、以下のコマンドで必要なソフトウェアをインストールします。
+
+----
+brew cask install corretto
+brew install docker
+brew cask install docker
+brew install maven
+brew cask install visual-studio-code
+----
