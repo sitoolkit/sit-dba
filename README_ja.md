@@ -187,7 +187,7 @@ yyy-entity/hibernate.reveng.xmlファイルを変更して、JPAエンティテ�
 <hibernate-reverse-engineering>
 
 <!--これはサンプルであるため、DBスキーマを変更した後に削除します。-->
-<table-filter match-name="person" package="io.sitoolkit.dba.domain.persion"></table-filter>
+<table-filter match-name="person" package="io.sitoolkit.dba.domain.person"></table-filter>
 
 <!--ターゲットテーブルとそれらのエンティティパッケージを追加します。-->
 <table-filter match-name="YOUR TABLE" package="YOUR PACKAGE OF ENTITY CLASS"></table-filter>

@@ -1,4 +1,4 @@
-package io.sitoolkit.dba.domain.persion;
+package io.sitoolkit.dba.domain.person;
 
 import java.util.List;
 
