@@ -1,6 +1,8 @@
 <project xmlns:if="ant:if"
   xmlns:unless="ant:unless" name="sit-dba" basedir="." default="install">
 
+  <import file="build-dev.xml" />
+
   <condition property="mvn.cmd" value="${basedir}\mvnw.cmd" else="${basedir}\mvnw">
     <os family="windows" />
   </condition>
@@ -58,39 +60,6 @@
       <arg line="up dbdoc"/>
     </exec>
 
-  </target>
-
-
-  <target name="set-version">
-
-    <property name="version" value="2.0.0-SNAPSHOT"/>
-
-    <exec executable="${mvn.cmd}">
-      <arg line="versions:set -DnewVersion=${version} -DgenerateBackupPoms=false" />
-    </exec>
-
-    <exec executable="${mvn.cmd}">
-      <arg line="-f src/archetype" />
-      <arg line="versions:set -DnewVersion=${version} -DgenerateBackupPoms=false" />
-    </exec>
-
-    <replaceregexp file="README.md" match="-DarchetypeVersion=.* " replace="-DarchetypeVersion=${version} " />
-
-    <replaceregexp file="README_ja.md" match="-DarchetypeVersion=.* " replace="-DarchetypeVersion=${version} " />
-
-    <replaceregexp file="src/archetype/build.xml" match="-DarchetypeVersion=.*&quot;" replace="-DarchetypeVersion=${version}&quot;" />
-
-    <replaceregexp file="sit-dba-migration/pom.xml" match="&lt;csvloader.version&gt;.*&lt;/csvloader.version&gt;" replace="&lt;csvloader.version&gt;${version}&lt;/csvloader.version&gt;" />
-
-  </target>
-
-  <target name="translate-readme">
-    <exec executable="${mvn.cmd}" dir="${basedir}" failonerror="true">
-      <arg line="-N sit-bt:translate -Dbt.mode=ja2en" />
-      <arg value="-Dbt.target=README_ja.md:README.md" />
-    </exec>
-
-    <replace file="README.md" token="[English](README.md)" value="[日本語](README_ja.md)"/>
   </target>
 
 </project>
