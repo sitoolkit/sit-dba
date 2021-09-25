@@ -1,4 +1,5 @@
-<project xmlns:if="ant:if" xmlns:unless="ant:unless" name="sit-dba" basedir="." default="install">
+<project xmlns:if="ant:if"
+  xmlns:unless="ant:unless" name="sit-dba" basedir="." default="install">
 
   <condition property="mvn.cmd" value="${basedir}\mvnw.cmd" else="${basedir}\mvnw">
     <os family="windows" />
@@ -7,7 +8,7 @@
   <exec executable="docker-compose" resultproperty="docker.ret" failifexecutionfails="false">
     <arg line="version"/>
   </exec>
-  
+
   <condition property="docker.installed">
     <equals arg1="${docker.ret}" arg2="0"/>
   </condition>
@@ -26,7 +27,7 @@
     </exec>
 
     <exec executable="${mvn.cmd}" failonerror="true">
-      <arg line="-f sit-dba-entity -P reveng"/>
+      <arg line="-f sit-dba-entity -P reverse"/>
     </exec>
 
     <exec executable="${mvn.cmd}" failonerror="true">
@@ -34,10 +35,10 @@
     </exec>
 
     <antcall target="export-dbdoc"/>
-    
+
   </target>
-  
-  
+
+
   <target name="init-container" if="${docker.installed}">
 
     <exec executable="${mvn.cmd}" failonerror="true">
@@ -50,7 +51,7 @@
 
   </target>
 
-  
+
   <target name="export-dbdoc" if="${docker.installed}">
 
     <exec executable="docker-compose" failonerror="true">
@@ -58,8 +59,8 @@
     </exec>
 
   </target>
-  
-  
+
+
   <target name="set-version">
 
     <property name="version" value="1.2.0-SNAPSHOT"/>
@@ -73,25 +74,17 @@
       <arg line="versions:set -DnewVersion=${version} -DgenerateBackupPoms=false" />
     </exec>
 
-    <replaceregexp file="README.md"
-                   match="-DarchetypeVersion=.* "
-                   replace="-DarchetypeVersion=${version} " />
+    <replaceregexp file="README.md" match="-DarchetypeVersion=.* " replace="-DarchetypeVersion=${version} " />
 
-    <replaceregexp file="README_ja.md"
-                   match="-DarchetypeVersion=.* "
-                   replace="-DarchetypeVersion=${version} " />
+    <replaceregexp file="README_ja.md" match="-DarchetypeVersion=.* " replace="-DarchetypeVersion=${version} " />
 
-    <replaceregexp file="src/archetype/build.xml"
-                   match="-DarchetypeVersion=.*&quot;"
-                   replace="-DarchetypeVersion=${version}&quot;" />
+    <replaceregexp file="src/archetype/build.xml" match="-DarchetypeVersion=.*&quot;" replace="-DarchetypeVersion=${version}&quot;" />
 
-    <replaceregexp file="sit-dba-migration/pom.xml"
-                   match="&lt;csvloader.version&gt;.*&lt;/csvloader.version&gt;"
-                   replace="&lt;csvloader.version&gt;${version}&lt;/csvloader.version&gt;" />
+    <replaceregexp file="sit-dba-migration/pom.xml" match="&lt;csvloader.version&gt;.*&lt;/csvloader.version&gt;" replace="&lt;csvloader.version&gt;${version}&lt;/csvloader.version&gt;" />
 
   </target>
 
-   <target name="translate-readme">
+  <target name="translate-readme">
     <exec executable="${mvn.cmd}" dir="${basedir}" failonerror="true">
       <arg line="-N sit-bt:translate -Dbt.mode=ja2en" />
       <arg value="-Dbt.target=README_ja.md:README.md" />

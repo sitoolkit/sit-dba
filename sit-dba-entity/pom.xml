@@ -1,19 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>sit-dba-entity</artifactId>
 
-  <properties>
-    <hibernate-tools.destdir>${project.build.directory}/generated-sources/hibernate-tools</hibernate-tools.destdir>
-  </properties>
-
   <dependencies>
-  
+
     <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>javax.persistence-api</artifactId>
       <version>2.2</version>
     </dependency>
-    
+
   </dependencies>
 
   <parent>
@@ -23,94 +20,55 @@
   </parent>
 
 
-  <!-- Build Settings -->
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${hibernate-tools.destdir}</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-
-  </build>
-
   <profiles>
     <profile>
-      <id>reveng</id>
+      <id>reverse</id>
 
-      <dependencies>
-        <dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-tools</artifactId>
-          <version>5.3.9.Final</version>
-        </dependency>
-        <dependency>
-          <groupId>${db.jdbc.groupId}</groupId>
-          <artifactId>${db.jdbc.artifactId}</artifactId>
-        </dependency>
-
-      </dependencies>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
 
       <build>
-        <defaultGoal>clean compile antrun:run</defaultGoal>
+
+        <defaultGoal>clean process-resources hibernate-tools:hbm2java</defaultGoal>
 
         <resources>
           <resource>
             <directory>src/tools/resources</directory>
             <filtering>true</filtering>
-            <targetPath>${project.build.directory}</targetPath>
+            <targetPath>${project.basedir}/../target</targetPath>
           </resource>
         </resources>
 
         <plugins>
-
           <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-tools-maven-plugin</artifactId>
+            <version>${hibernate-tools.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>${db.jdbc.groupId}</groupId>
+                <artifactId>${db.jdbc.artifactId}</artifactId>
+                <version>${db.jdbc.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>io.sitoolkit.dba</groupId>
+                <artifactId>sit-dba-entity-tools</artifactId>
+                <version>${project.version}</version>
+              </dependency>
+            </dependencies>
             <configuration>
-              <target>
-                <property name="maven.compile.classpath" refid="maven.compile.classpath" />
-                <ant antfile="${project.basedir}/build.xml" />
-              </target>
+              <jdk5>true</jdk5>
+              <ejb3>true</ejb3>
+              <revengStrategy>io.sitoolkit.dba.entity.infra.jpa.ConfigurableReverseEngineeringStrategy</revengStrategy>
+              <propertyFile>${project.parent.build.directory}/hibernate.reveng.properties</propertyFile>
             </configuration>
-          </plugin>
-
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>3.2.0</version>
-            <executions>
-              <execution>
-                <id>add-tools-source</id>
-                <phase>generate-sources</phase>
-                <goals>
-                  <goal>add-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>src/tools/java</source>
-                  </sources>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
 
         </plugins>
       </build>
     </profile>
+
   </profiles>
 
 </project>

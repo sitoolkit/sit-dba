@@ -1,0 +1,28 @@
+{
+  "classSuffix": "Entity",
+  "baseClass": "io.sitoolkit.dba.infra.jpa.BaseEntity",
+  "typeMappings": {
+    "CHAR": "java.lang.String",
+    "DATE": "java.time.LocalData",
+    "TIME": "java.time.LocalTime",
+    "TIMESTAMP": "java.time.LocalDateTime"
+  },
+  "excludeTables": [
+    "flyway_schema_history"
+  ],
+  "excludeColumns": [
+    "created_date",
+    "created_by",
+    "updated_date",
+    "updated_by",
+    "version"
+  ],
+  "packageMappings": {
+    "io.sitoolkit.dba.domain.product": [
+      "product",
+      "product_attribute",
+      "product_attribute_variation",
+      "product_sku"
+    ]
+  }
+}

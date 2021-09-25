@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <!-- The Basics -->
@@ -19,6 +20,7 @@
 
   <modules>
     <module>sit-dba-entity</module>
+    <module>sit-dba-entity-tools</module>
     <module>sit-dba-migration</module>
     <module>sit-dba-sample-spring</module>
   </modules>
@@ -30,6 +32,9 @@
 
     <ant.target>install</ant.target>
     <ant.file>build.xml</ant.file>
+
+    <hibernate-tools.version>5.5.7.Final</hibernate-tools.version>
+
   </properties>
 
 
