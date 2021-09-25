@@ -43,24 +43,6 @@
 
     <defaultGoal>antrun:run</defaultGoal>
 
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>schemaspy.properties</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>.env</include>
-        </includes>
-        <targetPath>${project.basedir}</targetPath>
-      </resource>
-    </resources>
-
     <plugins>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -70,19 +52,6 @@
             <ant antfile="${ant.file}" target="${ant.target}" />
           </target>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
-        <executions>
-          <execution>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>resources</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -129,6 +98,48 @@
         <schemaspy.db.type>pgsql</schemaspy.db.type>
       </properties>
     </profile>
+
+    <profile>
+      <id>resources</id>
+
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+            <includes>
+              <include>schemaspy.properties</include>
+            </includes>
+          </resource>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+            <includes>
+              <include>.env</include>
+            </includes>
+            <targetPath>${project.basedir}</targetPath>
+          </resource>
+        </resources>
+
+        <plugins>
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.2.0</version>
+            <inherited>false</inherited>
+            <executions>
+              <execution>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>resources</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+
+      </build>
+    </profile>
+
   </profiles>
 
 </project>

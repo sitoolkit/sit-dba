@@ -8,6 +8,10 @@
     </exec>
 
     <exec executable="${mvn.cmd}" failonerror="true">
+      <arg line="-f sit-dba-entity-tools clean install"/>
+    </exec>
+
+    <exec executable="${mvn.cmd}" failonerror="true">
       <arg line="-f sit-dba-migration -P migrate"/>
     </exec>
 

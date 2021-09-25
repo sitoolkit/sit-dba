@@ -58,9 +58,6 @@
     <developerConnection>scm:git:git//github.com/sitoolkit/sit-dba.git</developerConnection>
     <url>https://github.com/sitoolkit/sit-dba.git</url>
   </scm>
-  <prerequisites>
-    <maven>3.3</maven>
-  </prerequisites>
 
   <distributionManagement>
     <snapshotRepository>
