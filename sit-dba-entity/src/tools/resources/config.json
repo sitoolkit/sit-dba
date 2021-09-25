@@ -3,7 +3,7 @@
   "baseClass": "io.sitoolkit.dba.infra.jpa.BaseEntity",
   "typeMappings": {
     "CHAR": "java.lang.String",
-    "DATE": "java.time.LocalData",
+    "DATE": "java.time.LocalDate",
     "TIME": "java.time.LocalTime",
     "TIMESTAMP": "java.time.LocalDateTime"
   },
@@ -18,11 +18,12 @@
     "version"
   ],
   "packageMappings": {
-    "io.sitoolkit.dba.domain.product": [
-      "product",
-      "product_attribute",
-      "product_attribute_variation",
-      "product_sku"
+    "io.sitoolkit.dba.domain.sample": [
+      "main",
+      "one_to_one",
+      "one_to_many",
+      "many_to_many",
+      "composite_key"
     ]
   }
 }
