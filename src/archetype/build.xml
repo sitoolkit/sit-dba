@@ -73,7 +73,7 @@
       <arg line="org.apache.maven.plugins:maven-archetype-plugin:3.2.0:generate -B"/>
       <arg line="-DarchetypeGroupId=io.sitoolkit.dba"/>
       <arg line="-DarchetypeArtifactId=sit-dba-archetype"/>
-      <arg line="-DarchetypeVersion=1.2.0-SNAPSHOT"/>
+      <arg line="-DarchetypeVersion=2.0.0-SNAPSHOT"/>
       <arg line="-DgroupId=a.b.c"/>
       <arg line="-DartifactId=${project}"/>
     </exec>

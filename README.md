@@ -202,7 +202,7 @@ You can generate a new project using the following maven new project :
 mvn archetype:generate -B \
     -DarchetypeGroupId=io.sitoolkit.dba \
     -DarchetypeArtifactId=sit-dba-archetype \
-    -DarchetypeVersion=1.2.0-SNAPSHOT \
+    -DarchetypeVersion=2.0.0-SNAPSHOT \
     -DgroupId=xxx \
     -DartifactId=yyy
 ```
