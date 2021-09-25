@@ -54,6 +54,10 @@
         <activeByDefault>true</activeByDefault>
       </activation>
 
+      <properties>
+        <entity-tools.version>2.0.0-SNAPSHOT</entity-tools.version>
+      </properties>
+
       <build>
 
         <defaultGoal>clean process-resources hibernate-tools:hbm2java</defaultGoal>
@@ -80,7 +84,7 @@
               <dependency>
                 <groupId>io.sitoolkit.dba</groupId>
                 <artifactId>sit-dba-entity-tools</artifactId>
-                <version>${project.version}</version>
+                <version>${entity-tools.version}</version>
               </dependency>
             </dependencies>
             <configuration>

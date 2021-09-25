@@ -1,4 +1,5 @@
-<project xmlns:if="ant:if" xmlns:unless="ant:unless" name="sit-dba-archetype" basedir="." default="install">
+<project xmlns:if="ant:if"
+  xmlns:unless="ant:unless" name="sit-dba-archetype" basedir="." default="install">
 
   <condition property="mvnw" value="${basedir}\mvnw.cmd" else="${basedir}\mvnw">
     <os family="windows" />
@@ -6,10 +7,14 @@
 
   <property name="archetype.workdir" value="${basedir}/target/archetype-work"/>
   <property name="archetype.gendir" value="${archetype.workdir}/target/generated-sources/archetype"/>
-  
+
   <target name="deploy">
-    
+
     <antcall target="install"/>
+
+    <exec executable="${mvnw}" failonerror="true">
+      <arg line="deploy -f sit-dba-entity-tools -P release"/>
+    </exec>
 
     <exec executable="${mvnw}" dir="${archetype.gendir}" failonerror="true">
       <arg line="deploy -P release"/>
@@ -17,7 +22,7 @@
 
   </target>
 
-  
+
   <target name="install">
 
     <antcall target="prepare-archetype" />
@@ -46,29 +51,32 @@
       <fileset dir="${basedir}" includes=".mvn/**,src/main/**,build.xml,docker-compose.yml,mvnw,mvnw.cmd,pom.xml" />
     </copy>
 
+    <replace file="${archetype.workdir}/pom.xml" token="&lt;module&gt;sit-dba-entity-tools&lt;/module&gt;" value=""/>
+    <replace file="${archetype.workdir}/build.xml" token="&lt;import file=&quot;build-dev.xml&quot; /&gt;" value=""/>
+
   </target>
 
-  
+
   <target name="create-archetype">
 
     <exec executable="${mvnw}" dir="${archetype.workdir}" failonerror="true">
-      <arg line="archetype:create-from-project"/>
+      <arg line="archetype:create-from-project -Darchetype.filteredExtentions=java,xml,json"/>
     </exec>
 
     <copy file="${basedir}/src/archetype/pom.xml" tofile="${archetype.gendir}/pom.xml" overwrite="true"/>
 
   </target>
 
-  
+
   <target name="test">
-    
+
     <property name="workdir" value="${basedir}/target/test"/>
     <property name="project" value="test-dba" />
     <property name="projectdir" value="${workdir}/${project}" />
-    
+
     <delete dir="${workdir}" />
     <mkdir dir="${workdir}" />
-    
+
     <exec executable="${mvnw}" dir="${workdir}" failonerror="true">
       <arg line="org.apache.maven.plugins:maven-archetype-plugin:3.2.0:generate -B"/>
       <arg line="-DarchetypeGroupId=io.sitoolkit.dba"/>
@@ -77,7 +85,7 @@
       <arg line="-DgroupId=a.b.c"/>
       <arg line="-DartifactId=${project}"/>
     </exec>
-    
+
     <condition property="mvnw.local" value="${projectdir}/mvnw.cmd" else="${projectdir}/mvnw">
       <os family="windows" />
     </condition>
@@ -86,7 +94,7 @@
 
     <replace file="${projectdir}/pom.xml" token="&lt;db.admin.port&gt;80" value="&lt;db.admin.port&gt;81"/>
     <replace file="${projectdir}/pom.xml" token="&lt;db.port&gt;5432" value="&lt;db.port&gt;5433"/>
-    
+
     <exec executable="${mvnw.local}" dir="${projectdir}">
       <arg line="-N"/>
     </exec>

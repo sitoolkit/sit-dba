@@ -36,8 +36,6 @@
       <arg line="install"/>
     </exec>
 
-    <antcall target="export-dbdoc"/>
-
   </target>
 
 

@@ -45,7 +45,7 @@
 
     <replaceregexp file="src/archetype/build.xml" match="-DarchetypeVersion=.*&quot;" replace="-DarchetypeVersion=${version}&quot;" />
 
-    <replaceregexp file="sit-dba-migration/pom.xml" match="&lt;csvloader.version&gt;.*&lt;/csvloader.version&gt;" replace="&lt;csvloader.version&gt;${version}&lt;/csvloader.version&gt;" />
+    <replaceregexp file="sit-dba-entity/pom.xml" match="&lt;entity-tools.version&gt;.*&lt;/entity-tools.version&gt;" replace="&lt;entity-tools.version&gt;${version}&lt;/entity-tools.version&gt;" />
 
   </target>
 
