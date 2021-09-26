@@ -62,10 +62,6 @@
     <profile>
       <id>reverse</id>
 
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-
       <properties>
         <entity-tools.version>2.0.0-SNAPSHOT</entity-tools.version>
       </properties>
