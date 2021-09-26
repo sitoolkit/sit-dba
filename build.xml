@@ -42,7 +42,7 @@
   <target name="init-container" if="${docker.installed}">
 
     <exec executable="${mvn.cmd}" failonerror="true">
-      <arg line="-N -P resources"/>
+      <arg line="-N -P resources,local-db"/>
     </exec>
 
     <exec executable="docker-compose" failonerror="true">
