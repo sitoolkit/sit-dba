@@ -1,8 +1,7 @@
 version: "3.7"
 services:
-
   dbms:
-    image: postgres:12
+    image: postgres:13
     environment:
       TZ: ${OS_TIMEZONE}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -16,7 +15,7 @@ services:
 
   dbadmin:
     image: dockage/phppgadmin
-    depends_on: 
+    depends_on:
       - dbms
     environment:
       PHP_PG_ADMIN_SERVER_HOST: dbms
@@ -27,8 +26,8 @@ services:
 
   dbdoc:
     image: schemaspy/schemaspy
-    environment: 
+    environment:
       TZ: ${OS_TIMEZONE}
-    volumes: 
+    volumes:
       - ./target/classes/schemaspy.properties:/schemaspy.properties
       - ./target/schemaspy:/output
