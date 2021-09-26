@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.hibernate.cfg.reveng.AssociationInfo;
+import org.hibernate.cfg.reveng.DefaulAssociationInfo;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.ForeignKey;
@@ -179,19 +181,15 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
     return className.replace(getConfig().getClassSuffix(), "");
   }
 
-  // @Override
-  // public AssociationInfo foreignKeyToAssociationInfo(ForeignKey foreignKey) {
-  //   DefaulAssociationInfo associationInfo = new DefaulAssociationInfo();
+  @Override
+  public AssociationInfo foreignKeyToAssociationInfo(ForeignKey foreignKey) {
+    DefaulAssociationInfo associationInfo = new DefaulAssociationInfo();
+    config
+        .findCascade(foreignKey.getTable().getName(), foreignKey.getReferencedTable().getName())
+        .ifPresent(cascade -> associationInfo.setCascade(cascade.getType()));
 
-  //   return associationInfo;
-  // }
-
-  // @Override
-  // public AssociationInfo foreignKeyToInverseAssociationInfo(ForeignKey foreignKey) {
-  //   DefaulAssociationInfo associationInfo = new DefaulAssociationInfo();
-
-  //   return associationInfo;
-  // }
+    return associationInfo;
+  }
 
   private String removePropertySuffix(String propertyName) {
     if (getConfig().getClassSuffix() == null || getConfig().getClassSuffix().isEmpty()) {

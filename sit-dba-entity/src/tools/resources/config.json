@@ -37,5 +37,12 @@
         "main.col_jsonb"
       ]
     }
+  ],
+  "cascades": [
+    {
+      "table": "one_to_many",
+      "referencedTable": "main",
+      "type": "all"
+    }
   ]
 }

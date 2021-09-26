@@ -4,17 +4,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-public class MainRepositoryTest {
+class MainRepositoryTest {
 
   @Autowired MainRepository repository;
 
+  @PersistenceContext EntityManager em;
+
   @Test
-  public void test() {
+  void test() {
     MainEntity main = new MainEntity();
     main.setId(UUID.randomUUID().toString());
     main.setName("name");
@@ -25,5 +29,21 @@ public class MainRepositoryTest {
 
     assertEquals(mains.size(), 1);
     assertEquals(mains.get(0).getId(), main.getId());
+  }
+
+  @Test
+  void testCascade() {
+    MainEntity main = new MainEntity();
+    main.setId(UUID.randomUUID().toString());
+
+    OneToManyEntity oneToMany = new OneToManyEntity();
+    oneToMany.setId(UUID.randomUUID().toString());
+    main.getOneToManies().add(oneToMany);
+
+    repository.save(main);
+
+    MainEntity savedMain = repository.findById(main.getId()).get();
+
+    assertEquals(oneToMany.getId(), savedMain.getOneToManies().iterator().next().getId());
   }
 }

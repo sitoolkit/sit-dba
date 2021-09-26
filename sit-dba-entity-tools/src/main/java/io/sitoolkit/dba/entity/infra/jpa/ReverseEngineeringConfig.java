@@ -32,6 +32,8 @@ public class ReverseEngineeringConfig {
 
   private List<ColumnAnnotation> extraColumnAnnotations = new ArrayList<>();
 
+  private List<Cascade> cascades = new ArrayList<>();
+
   /** key: table, value: package */
   @Getter(lazy = true)
   private final Map<String, String> tablePackageMap = buildTablePackageMap();
@@ -49,6 +51,20 @@ public class ReverseEngineeringConfig {
   @Getter(lazy = true)
   private final Map<String, List<ColumnAnnotation>> columnAnnotationMap =
       buildColumnAnnotationMap();
+
+  /** key: table -> referencedTable */
+  @Getter(lazy = true)
+  private final Map<String, Cascade> cascadeMap = buildCascadeMap();
+
+  private Map<String, Cascade> buildCascadeMap() {
+    Map<String, Cascade> map = new HashMap<>();
+
+    for (Cascade cascade : cascades) {
+      map.put(cascade.getTable() + "->" + cascade.getReferencedTable(), cascade);
+    }
+
+    return map;
+  }
 
   private Map<String, String> buildTablePackageMap() {
     Map<String, String> tablePackageMap = new HashMap<>();
@@ -84,6 +100,10 @@ public class ReverseEngineeringConfig {
 
   public List<ColumnAnnotation> findColumnAnnotations(String table, String column) {
     return getColumnAnnotationMap().getOrDefault(table + "." + column, new ArrayList<>());
+  }
+
+  public Optional<Cascade> findCascade(String table, String referencedTable) {
+    return Optional.ofNullable(getCascadeMap().get(table + "->" + referencedTable));
   }
 
   public static ReverseEngineeringConfig load() {
