@@ -30,6 +30,8 @@ public class ReverseEngineeringConfig {
 
   private Map<String, List<String>> packageMappings = new HashMap<>();
 
+  private List<ColumnAnnotation> extraColumnAnnotations = new ArrayList<>();
+
   /** key: table, value: package */
   @Getter(lazy = true)
   private final Map<String, String> tablePackageMap = buildTablePackageMap();
@@ -43,6 +45,11 @@ public class ReverseEngineeringConfig {
                   entry -> JDBCType.valueOf(entry.getKey()).getVendorTypeNumber(),
                   Entry::getValue));
 
+  /** key: column (table.column) */
+  @Getter(lazy = true)
+  private final Map<String, List<ColumnAnnotation>> columnAnnotationMap =
+      buildColumnAnnotationMap();
+
   private Map<String, String> buildTablePackageMap() {
     Map<String, String> tablePackageMap = new HashMap<>();
 
@@ -55,12 +62,28 @@ public class ReverseEngineeringConfig {
     return tablePackageMap;
   }
 
+  private Map<String, List<ColumnAnnotation>> buildColumnAnnotationMap() {
+    Map<String, List<ColumnAnnotation>> map = new HashMap<>();
+
+    for (ColumnAnnotation colAnn : extraColumnAnnotations) {
+      for (String column : colAnn.getColumns()) {
+        map.computeIfAbsent(column, key -> new ArrayList<>()).add(colAnn);
+      }
+    }
+
+    return map;
+  }
+
   public Optional<String> findPackageByTable(String tableName) {
     return Optional.ofNullable(getTablePackageMap().get(tableName));
   }
 
   public Optional<String> findJavaTypeByJdbcType(int sqlType) {
     return Optional.ofNullable(getJdbcJavaTypeMap().get(sqlType));
+  }
+
+  public List<ColumnAnnotation> findColumnAnnotations(String table, String column) {
+    return getColumnAnnotationMap().getOrDefault(table + "." + column, new ArrayList<>());
   }
 
   public static ReverseEngineeringConfig load() {

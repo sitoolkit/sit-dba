@@ -5,7 +5,8 @@
     "CHAR": "java.lang.String",
     "DATE": "java.time.LocalDate",
     "TIME": "java.time.LocalTime",
-    "TIMESTAMP": "java.time.LocalDateTime"
+    "TIMESTAMP": "java.time.LocalDateTime",
+    "OTHER": "java.lang.String"
   },
   "excludeTables": [
     "flyway_schema_history"
@@ -25,5 +26,16 @@
       "many_to_many",
       "composite_key"
     ]
-  }
+  },
+  "extraColumnAnnotations": [
+    {
+      "type": "org.hibernate.annotations.Type",
+      "attributes": {
+        "type": "\"jsonb\""
+      },
+      "columns": [
+        "main.col_jsonb"
+      ]
+    }
+  ]
 }

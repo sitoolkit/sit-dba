@@ -1,9 +1,11 @@
 package io.sitoolkit.dba.entity.infra.jpa;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.ForeignKey;
@@ -37,10 +39,9 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
     return getConfig().getExcludeColumns().contains(columnName.toLowerCase());
   }
 
-  @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
-  public Map tableToMetaAttributes(TableIdentifier tableIdentifier) {
-    Map map = new HashMap<>();
+  public Map<String, MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier) {
+    Map<String, MetaAttribute> map = new HashMap<>();
 
     String baseClass = getConfig().getBaseClass();
     if (baseClass != null && !baseClass.isEmpty()) {
@@ -51,13 +52,35 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
     return map;
   }
 
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  private void addMeta(Map map, String name, String... values) {
+  private void addMeta(Map<String, MetaAttribute> map, String name, String... values) {
+    addMeta(map, name, List.of(values));
+  }
+
+  private void addMeta(Map<String, MetaAttribute> map, String name, List<String> values) {
     MetaAttribute attr = new MetaAttribute(name);
     for (String value : values) {
       attr.addValue(value);
     }
     map.put(name, attr);
+  }
+
+  @Override
+  public Map<String, MetaAttribute> columnToMetaAttributes(
+      TableIdentifier identifier, String column) {
+    Map<String, MetaAttribute> map = new HashMap<>();
+
+    List<String> extraAnnotations = new ArrayList<>();
+
+    config.findColumnAnnotations(identifier.getName(), column).stream()
+        .map(ColumnAnnotation::build)
+        .forEach(extraAnnotations::add);
+
+    addMeta(
+        map,
+        "extraAnnotation",
+        extraAnnotations.stream().collect(Collectors.joining(System.lineSeparator())));
+
+    return map;
   }
 
   @Override

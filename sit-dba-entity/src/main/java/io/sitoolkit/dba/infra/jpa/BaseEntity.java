@@ -1,13 +1,16 @@
 package io.sitoolkit.dba.infra.jpa;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import java.time.LocalDateTime;
-
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 @MappedSuperclass
 @EntityListeners(value = BaseEntityListener.class)
+@TypeDefs({@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)})
 public class BaseEntity {
 
   private LocalDateTime createdDate;
@@ -60,5 +63,4 @@ public class BaseEntity {
   public void setVersion(long version) {
     this.version = version;
   }
-
 }

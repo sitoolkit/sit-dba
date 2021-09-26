@@ -18,6 +18,7 @@ public class MainRepositoryTest {
     MainEntity main = new MainEntity();
     main.setId(UUID.randomUUID().toString());
     main.setName("name");
+    main.setColJsonb("{}");
     repository.save(main);
 
     List<MainEntity> mains = repository.findByName(main.getName());

@@ -5,6 +5,7 @@ CREATE TABLE main (
     col_date DATE,
     col_time TIME,
     col_timestamp TIMESTAMP,
+    col_jsonb JSONB,
     ${commonColumns}
 );
 
