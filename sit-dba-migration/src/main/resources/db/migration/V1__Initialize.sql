@@ -10,11 +10,11 @@ CREATE TABLE main (
 );
 
 
--- CREATE TABLE one_to_one (
---     id CHAR(36) PRIMARY KEY REFERENCES main,
---     name VARCHAR(100),
---     ${commonColumns}
--- );
+CREATE TABLE one_to_one (
+    id CHAR(36) PRIMARY KEY REFERENCES main,
+    name VARCHAR(100),
+    ${commonColumns}
+);
 
 
 CREATE TABLE one_to_many (
