@@ -182,7 +182,7 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
   }
 
   @Override
-  public AssociationInfo foreignKeyToAssociationInfo(ForeignKey foreignKey) {
+  public AssociationInfo foreignKeyToInverseAssociationInfo(ForeignKey foreignKey) {
     DefaulAssociationInfo associationInfo = new DefaulAssociationInfo();
     config
         .findCascade(foreignKey.getTable().getName(), foreignKey.getReferencedTable().getName())

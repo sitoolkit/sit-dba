@@ -40,8 +40,8 @@
   ],
   "cascades": [
     {
-      "table": "one_to_many",
-      "referencedTable": "main",
+      "table": "many",
+      "referencedTable": "one_to_many",
       "type": "all"
     }
   ]

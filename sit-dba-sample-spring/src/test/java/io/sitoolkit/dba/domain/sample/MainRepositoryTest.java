@@ -38,9 +38,12 @@ class MainRepositoryTest {
 
     OneToManyEntity oneToMany = new OneToManyEntity();
     oneToMany.setId(UUID.randomUUID().toString());
+    oneToMany.setMain(main);
     main.getOneToManies().add(oneToMany);
 
     repository.save(main);
+    em.flush();
+    em.clear();
 
     MainEntity savedMain = repository.findById(main.getId()).get();
 
