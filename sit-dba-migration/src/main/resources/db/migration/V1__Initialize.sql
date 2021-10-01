@@ -6,6 +6,7 @@ CREATE TABLE main (
     col_time TIME,
     col_timestamp TIMESTAMP,
     col_jsonb JSONB,
+    sort_key INT,
     ${commonColumns}
 );
 

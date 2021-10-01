@@ -27,6 +27,11 @@
       "composite_key"
     ]
   },
+  "interfaceMappings": {
+    "io.sitoolkit.dba.infra.jpa.Sortable": [
+      "main"
+    ]
+  },
   "extraColumnAnnotations": [
     {
       "type": "org.hibernate.annotations.Type",

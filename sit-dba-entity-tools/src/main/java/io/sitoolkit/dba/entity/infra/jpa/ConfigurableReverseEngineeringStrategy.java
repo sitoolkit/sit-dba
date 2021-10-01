@@ -51,6 +51,13 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
       addMeta(map, "extra-import", baseClass);
     }
 
+    List<String> interfaces = new ArrayList<>();
+    interfaces.addAll(getConfig().findInterfacesByTable(tableIdentifier.getName()));
+
+    if (!interfaces.isEmpty()) {
+      addMeta(map, "implements", interfaces);
+    }
+
     return map;
   }
 

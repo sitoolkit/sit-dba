@@ -30,6 +30,23 @@ public class ReverseEngineeringConfig {
 
   private Map<String, List<String>> packageMappings = new HashMap<>();
 
+  /** key: interface, value: tables */
+  private Map<String, List<String>> interfaceMappings = new HashMap<>();
+
+  /** key: table, value: interfaces */
+  @Getter(lazy = true)
+  private final Map<String, List<String>> interfaceMap = buildInterfaceMap();
+
+  private Map<String, List<String>> buildInterfaceMap() {
+    Map<String, List<String>> map = new HashMap<>();
+    for (Entry<String, List<String>> entry : interfaceMappings.entrySet()) {
+      for (String table : entry.getValue()) {
+        map.computeIfAbsent(table, key -> new ArrayList<>()).add(entry.getKey());
+      }
+    }
+    return map;
+  }
+
   private List<ColumnAnnotation> extraColumnAnnotations = new ArrayList<>();
 
   private List<Cascade> cascades = new ArrayList<>();
@@ -96,6 +113,10 @@ public class ReverseEngineeringConfig {
 
   public Optional<String> findJavaTypeByJdbcType(int sqlType) {
     return Optional.ofNullable(getJdbcJavaTypeMap().get(sqlType));
+  }
+
+  public List<String> findInterfacesByTable(String table) {
+    return getInterfaceMap().computeIfAbsent(table, key -> new ArrayList<>());
   }
 
   public List<ColumnAnnotation> findColumnAnnotations(String table, String column) {

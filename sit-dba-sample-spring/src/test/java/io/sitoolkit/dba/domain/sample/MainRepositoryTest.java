@@ -2,8 +2,10 @@ package io.sitoolkit.dba.domain.sample;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
@@ -48,5 +50,17 @@ class MainRepositoryTest {
     MainEntity savedMain = repository.findById(main.getId()).get();
 
     assertEquals(oneToMany.getId(), savedMain.getOneToManies().iterator().next().getId());
+  }
+
+  @Test
+  void testInterface() {
+    List<MainEntity> mains = new ArrayList<>();
+    repository.findAll().forEach(mains::add);
+
+    List<MainEntity> sorted = mains.stream().sorted().collect(Collectors.toList());
+
+    assertEquals(sorted.get(0).getSortKey(), 1);
+    assertEquals(sorted.get(1).getSortKey(), 2);
+    assertEquals(sorted.get(2).getSortKey(), 3);
   }
 }
