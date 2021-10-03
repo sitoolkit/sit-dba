@@ -130,7 +130,7 @@ public class ReverseEngineeringConfig {
   }
 
   public static ReverseEngineeringConfig load() {
-    return load(Path.of("target/config.json"));
+    return load(Path.of("target/hibernate-tools-config.json"));
   }
 
   public static ReverseEngineeringConfig load(Path configPath) {
