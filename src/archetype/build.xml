@@ -13,7 +13,7 @@
     <antcall target="install"/>
 
     <exec executable="${mvnw}" failonerror="true">
-      <arg line="deploy -pl ./,sit-dba-entity-tools -P release"/>
+      <arg line="deploy -f sit-dba-entity-tools -P release"/>
     </exec>
 
     <exec executable="${mvnw}" dir="${archetype.gendir}" failonerror="true">
@@ -24,6 +24,10 @@
 
 
   <target name="install">
+
+    <exec executable="${mvnw}" failonerror="true">
+      <arg line="install -f sit-dba-entity-tools"/>
+    </exec>
 
     <antcall target="prepare-archetype" />
 
@@ -95,11 +99,11 @@
     <replace file="${projectdir}/pom.xml" token="&lt;db.admin.port&gt;80" value="&lt;db.admin.port&gt;81"/>
     <replace file="${projectdir}/pom.xml" token="&lt;db.port&gt;5432" value="&lt;db.port&gt;5433"/>
 
-    <exec executable="${mvnw.local}" dir="${projectdir}">
+    <exec executable="${mvnw.local}" dir="${projectdir}" failonerror="true">
       <arg line="-N"/>
     </exec>
 
-    <exec executable="docker-compose" dir="${projectdir}">
+    <exec executable="docker-compose" dir="${projectdir}" failonerror="true">
       <arg line="rm -sf"/>
     </exec>
 

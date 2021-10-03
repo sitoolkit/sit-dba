@@ -82,7 +82,7 @@
           <plugin>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-tools-maven-plugin</artifactId>
-            <version>${hibernate-tools.version}</version>
+            <version>5.5.7.Final</version>
             <dependencies>
               <dependency>
                 <groupId>${db.jdbc.groupId}</groupId>
