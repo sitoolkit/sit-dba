@@ -13,7 +13,7 @@
     <antcall target="install"/>
 
     <exec executable="${mvnw}" failonerror="true">
-      <arg line="deploy -f sit-dba-entity-tools -P release"/>
+      <arg line="deploy -pl ./,sit-dba-entity-tools -P release"/>
     </exec>
 
     <exec executable="${mvnw}" dir="${archetype.gendir}" failonerror="true">
