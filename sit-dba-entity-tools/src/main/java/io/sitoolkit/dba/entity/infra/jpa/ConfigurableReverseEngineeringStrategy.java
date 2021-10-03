@@ -58,6 +58,8 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
       addMeta(map, "implements", interfaces);
     }
 
+    addMeta(map, "suppressTimestamp", Boolean.toString(getConfig().isSupressTimetamp()));
+
     return map;
   }
 

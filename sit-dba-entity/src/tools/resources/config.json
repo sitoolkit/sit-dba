@@ -1,6 +1,7 @@
 {
   "classSuffix": "Entity",
   "baseClass": "io.sitoolkit.dba.infra.jpa.BaseEntity",
+  "supressTimetamp": true,
   "typeMappings": {
     "CHAR": "java.lang.String",
     "DATE": "java.time.LocalDate",

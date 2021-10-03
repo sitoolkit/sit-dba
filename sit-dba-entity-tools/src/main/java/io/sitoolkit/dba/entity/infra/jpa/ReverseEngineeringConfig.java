@@ -22,6 +22,8 @@ public class ReverseEngineeringConfig {
 
   private String baseClass = "";
 
+  private boolean supressTimetamp = false;
+
   private List<String> excludeTables = new ArrayList<>();
 
   private List<String> excludeColumns = new ArrayList<>();
