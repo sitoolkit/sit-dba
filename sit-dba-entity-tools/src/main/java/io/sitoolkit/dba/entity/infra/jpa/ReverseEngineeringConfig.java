@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 @Data
 public class ReverseEngineeringConfig {
@@ -79,7 +80,9 @@ public class ReverseEngineeringConfig {
     Map<String, Cascade> map = new HashMap<>();
 
     for (Cascade cascade : cascades) {
-      map.put(cascade.getTable() + "->" + cascade.getReferencedTable(), cascade);
+      map.put(
+          normalizeCase(cascade.getTable()) + "->" + normalizeCase(cascade.getReferencedTable()),
+          cascade);
     }
 
     return map;
@@ -126,7 +129,8 @@ public class ReverseEngineeringConfig {
   }
 
   public Optional<Cascade> findCascade(String table, String referencedTable) {
-    return Optional.ofNullable(getCascadeMap().get(table + "->" + referencedTable));
+    return Optional.ofNullable(
+        getCascadeMap().get(normalizeCase(table) + "->" + normalizeCase(referencedTable)));
   }
 
   public static ReverseEngineeringConfig load() {
@@ -145,5 +149,9 @@ public class ReverseEngineeringConfig {
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  private String normalizeCase(String str) {
+    return StringUtils.lowerCase(str);
   }
 }

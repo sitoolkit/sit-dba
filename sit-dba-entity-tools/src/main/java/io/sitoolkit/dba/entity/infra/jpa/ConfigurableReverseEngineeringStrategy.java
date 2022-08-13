@@ -182,22 +182,24 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
                     generatedIdentifier));
   }
 
+  @Override
+  public AssociationInfo foreignKeyToInverseAssociationInfo(ForeignKey foreignKey) {
+    return buildAssociationInfo(
+        foreignKey.getReferencedTable().getName(), foreignKey.getTable().getName());
+  }
+
+  @Override
+  public AssociationInfo foreignKeyToAssociationInfo(ForeignKey foreignKey) {
+    return buildAssociationInfo(
+        foreignKey.getTable().getName(), foreignKey.getReferencedTable().getName());
+  }
+
   private String removeClassSuffix(String className) {
     if (getConfig().getClassSuffix() == null || getConfig().getClassSuffix().isEmpty()) {
       return className;
     }
 
     return className.replace(getConfig().getClassSuffix(), "");
-  }
-
-  @Override
-  public AssociationInfo foreignKeyToInverseAssociationInfo(ForeignKey foreignKey) {
-    DefaulAssociationInfo associationInfo = new DefaulAssociationInfo();
-    config
-        .findCascade(foreignKey.getTable().getName(), foreignKey.getReferencedTable().getName())
-        .ifPresent(cascade -> associationInfo.setCascade(cascade.getType()));
-
-    return associationInfo;
   }
 
   private String removePropertySuffix(String propertyName) {
@@ -207,5 +209,17 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
 
     String propertySuffix = pluralize(getConfig().getClassSuffix());
     return pluralize(propertyName.replace(propertySuffix, ""));
+  }
+
+  private AssociationInfo buildAssociationInfo(String table, String referencedTable) {
+    Optional<Cascade> cascadeOpt = config.findCascade(table, referencedTable);
+
+    if (cascadeOpt.isEmpty()) {
+      return null;
+    }
+
+    DefaulAssociationInfo associationInfo = new DefaulAssociationInfo();
+    associationInfo.setCascade(cascadeOpt.get().getType());
+    return associationInfo;
   }
 }
