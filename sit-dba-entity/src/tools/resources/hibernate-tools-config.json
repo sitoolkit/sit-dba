@@ -50,5 +50,11 @@
       "referencedTable": "one_to_many",
       "type": "all"
     }
+  ],
+  "excludeForeignKeyAsManytoOne": [
+    "self_ref_self_id_fkey"
+  ],
+  "excludeForeignKeyAsCollection": [
+    "self_ref_self_id_fkey"
   ]
 }

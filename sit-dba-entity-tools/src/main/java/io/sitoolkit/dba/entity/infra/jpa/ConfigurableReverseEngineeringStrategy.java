@@ -10,6 +10,7 @@ import org.hibernate.cfg.reveng.AssociationInfo;
 import org.hibernate.cfg.reveng.DefaulAssociationInfo;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 
@@ -192,6 +193,26 @@ public class ConfigurableReverseEngineeringStrategy extends DefaultReverseEngine
   public AssociationInfo foreignKeyToAssociationInfo(ForeignKey foreignKey) {
     return buildAssociationInfo(
         foreignKey.getTable().getName(), foreignKey.getReferencedTable().getName());
+  }
+
+  @Override
+  public boolean excludeForeignKeyAsManytoOne(
+      String keyname,
+      TableIdentifier fromTable,
+      List<?> fromColumns,
+      TableIdentifier referencedTable,
+      List<?> referencedColumns) {
+    return config.getExcludeForeignKeyAsManytoOne().contains(keyname);
+  }
+
+  @Override
+  public boolean excludeForeignKeyAsCollection(
+      String keyname,
+      TableIdentifier fromTable,
+      List<Column> fromColumns,
+      TableIdentifier referencedTable,
+      List<Column> referencedColumns) {
+    return config.getExcludeForeignKeyAsCollection().contains(keyname);
   }
 
   private String removeClassSuffix(String className) {

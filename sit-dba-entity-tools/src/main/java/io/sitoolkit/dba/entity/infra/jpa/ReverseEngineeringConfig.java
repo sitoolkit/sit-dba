@@ -54,6 +54,10 @@ public class ReverseEngineeringConfig {
 
   private List<Cascade> cascades = new ArrayList<>();
 
+  private List<String> excludeForeignKeyAsManytoOne = new ArrayList<>();
+
+  private List<String> excludeForeignKeyAsCollection = new ArrayList<>();
+
   /** key: table, value: package */
   @Getter(lazy = true)
   private final Map<String, String> tablePackageMap = buildTablePackageMap();

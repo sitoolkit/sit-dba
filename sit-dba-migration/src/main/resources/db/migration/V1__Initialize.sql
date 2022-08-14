@@ -47,3 +47,11 @@ CREATE TABLE composite_key (
     ${commonColumns},
     CONSTRAINT composite_id_pk PRIMARY KEY (id_1, id_2)
 );
+
+
+CREATE TABLE self_ref (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(100),
+    self_id CHAR(36) REFERENCES self_ref,
+    ${commonColumns}
+);
